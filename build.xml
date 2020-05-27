@@ -1,0 +1,66 @@
+
+<project name="Zen_L_Initié" default="all" basedir=".">
+    <description>
+        Build the whole project
+    </description>
+
+    <target name="clean"
+            description="Clean up the folders">
+        <delete dir="class"/>
+        <delete dir="javaDoc"/>
+        <delete dir="jar"/>
+        <delete dir="reportTest"/>
+    </target>
+
+    <target name="compile" depends="clean"
+            description="Compile all the files">
+        <mkdir dir="class"/>
+        <javac srcdir="src" destdir="class"/>
+    </target>
+
+    <target name="javadoc" depends="compile"
+            description="Create the javadoc for all the files">
+        <mkdir dir="javaDoc"/>
+        <javadoc sourcepath="src" destdir="javaDoc"/>
+    </target>
+
+    <target name="jar" depends ="javadoc"
+            description="Create a jar file with all the files">
+        <mkdir dir="jar"/>
+        <jar destfile="jar/Zen_L_Initie.jar" basedir="class">
+            <manifest>
+                <attribute name="Main-Class" value="LaunchGame"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="junit" depends="javadoc"
+        description="Launch all the tests">
+        <javac includeantruntime="false" srcdir="src" destdir="class"/>  
+        <mkdir dir="reportTest"/>
+        <junit printsummary="on">
+            <formatter type="xml"/>
+            <classpath id="classpath.testReport">
+                <pathelement location="src"/>
+                <pathelement location="class"/>
+                <pathelement location="src/lib/junit-4.12.jar"/>
+                <pathelement location="src/lib/hamcrest-core-1.3.jar"/>
+            </classpath>
+            <test name="test.AutoPlayerTest" />
+            <test name="test.HumanPlayerTest" />
+            <test name="test.GameTest" />
+            <test name="test.PawnTest" />
+            <test name="test.SaveAndLoadTest" />
+            <test name="test.SquareTest" />
+            <test name="test.ZenTest" />
+        </junit>
+        <junitreport todir="reportTest">
+            <fileset dir="." includes="TEST-*.xml"/>
+            <report format="frames" todir="reportTest"/>
+        </junitreport>
+        <delete>
+            <fileset dir="." includes="TEST*" />
+        </delete>
+    </target>
+
+</project>
