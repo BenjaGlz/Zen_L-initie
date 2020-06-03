@@ -20,7 +20,22 @@ public class Pawn {
      * @param type : type of the Pawn
      */
 
-    public Pawn(int x, int y, PawnType type) {
+    public Pawn(int x, int y, PawnType type) { 
+
+        if (x < 0 || x >= size) {
+            System.out.println("Pawn : Error - x position out of range");
+        }
+        if (y < 0 || y >= size) {
+            System.out.println("Pawn : Error - y position out of range");
+        }
+        if (type == null) {
+            System.out.println("Pawn : Error - null value for type");
+        }
+        if (x >= 0 && x < size && y >= 0 && y < size && type != null) {
+            this.x = x;
+            this.y = y;
+            this.type = type;
+        }
 
     }
 
@@ -38,6 +53,10 @@ public class Pawn {
     public boolean isZen() {
 
         boolean isZen = false;
+
+        if (this.type == PawnType.ZEN) {
+            isZen = true;
+        }
 
         return isZen;
 
@@ -77,6 +96,13 @@ public class Pawn {
 
     public void setX(int x) {
 
+        if (x < 0 || x >= size) {
+            System.out.println("setX : Error - x position out of range");
+        }
+        else {
+            this.x = x;
+        }
+
     }
 
      /**
@@ -86,6 +112,13 @@ public class Pawn {
 
     public void setY(int y) {
 
+        if (y < 0 || y >= size) {
+            System.out.println("setY : Error - x position out of range");
+        }
+        else {
+            this.y = y;
+        }
+
     }
 
     /**
@@ -94,6 +127,13 @@ public class Pawn {
      */
 
     public void setType(PawnType type) {
+
+        if (type == null) {
+            System.out.println("setType : Error - null value for type");
+        }
+        else {
+            this.type = type;
+        }
 
     }
 

@@ -9,6 +9,7 @@ public class Square {
 
     private int x;
     private int y;
+    private boolean free; //expliquer pourquoi ajouté
     private static final int size = 11;
  
 
@@ -20,6 +21,19 @@ public class Square {
 
     public Square(int x, int y) {
 
+        if (x < 0 || x >= size) {
+            System.out.println("Square : Error - x position out of range");
+        }
+        if (y < 0 || y >= size) {
+            System.out.println("Square : Error - y position out of range");
+        }
+        if (x >= 0 && x < size && y >= 0 && y < size) {
+            this.x = x;
+            this.y = y;
+        }
+
+        this.free = true;
+
     }
 
     /**
@@ -29,9 +43,7 @@ public class Square {
 
     public boolean isFree() {
 
-        boolean free = false;
-
-        return free;
+        return this.free;
 
     }
 
@@ -40,6 +52,8 @@ public class Square {
      */
 
     public void setBusy() {
+
+        this.free = false;
 
     }
     
