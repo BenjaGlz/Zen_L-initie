@@ -8,9 +8,9 @@ import java.util.*;
 
 public abstract class Player {
 
-    private String name;
-    private ArrayList<Pawn> pawns;
-    private static final int size = 11;
+    protected String name;
+    protected ArrayList<Pawn> pawns;
+    protected static final int size = 11;
 
     /**
      * Constructor of the Player class

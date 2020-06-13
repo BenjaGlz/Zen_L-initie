@@ -22,10 +22,10 @@ public class Square {
     public Square(int x, int y) {
 
         if (x < 0 || x >= size) {
-            System.out.println("Square : Error - x position out of range");
+            System.err.println("Square : Error - x position out of range");
         }
         if (y < 0 || y >= size) {
-            System.out.println("Square : Error - y position out of range");
+            System.err.println("Square : Error - y position out of range");
         }
         if (x >= 0 && x < size && y >= 0 && y < size) {
             this.x = x;

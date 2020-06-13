@@ -8,10 +8,6 @@ import java.util.*;
 
 public class AutoPlayer extends Player {
 
-    private String name;
-    private ArrayList<Pawn> pawns;
-    private ZenType type;
-
     /**
      * Constructor of the HumanPlayer class
      * @param name : name of the player
@@ -31,10 +27,10 @@ public class AutoPlayer extends Player {
 
     public Pawn choosePawn() {
 
-        Pawn pawn = new Pawn();
+        int num = (int) (Math.random()*this.pawns.size());
 
-        return pawn;
-
+        return this.pawns.get(num);
+       
     }
 
     /**
@@ -45,6 +41,11 @@ public class AutoPlayer extends Player {
     public ZenType chooseZen() {
 
         ZenType type = ZenType.FRIEND;
+
+        int num = (int) Math.round(Math.random());
+        if (num == 0) {
+            type = ZenType.OPPONENT;
+        }
 
         return type;
 
@@ -57,7 +58,13 @@ public class AutoPlayer extends Player {
 
     public int[] newMove() {
 
-        int[] move = {0,0};
+        int[] move = new int[2];
+
+        int x = (int)(Math.random()*size);
+        int y = (int)(Math.random()*size);
+
+        move[0] = x;
+        move[1] = y;
 
         return move;
 

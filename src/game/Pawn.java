@@ -23,13 +23,13 @@ public class Pawn {
     public Pawn(int x, int y, PawnType type) { 
 
         if (x < 0 || x >= size) {
-            System.out.println("Pawn : Error - x position out of range");
+            System.err.println("Pawn : Error - x position out of range");
         }
         if (y < 0 || y >= size) {
-            System.out.println("Pawn : Error - y position out of range");
+            System.err.println("Pawn : Error - y position out of range");
         }
         if (type == null) {
-            System.out.println("Pawn : Error - null value for type");
+            System.err.println("Pawn : Error - null value for type");
         }
         if (x >= 0 && x < size && y >= 0 && y < size && type != null) {
             this.x = x;
@@ -97,7 +97,7 @@ public class Pawn {
     public void setX(int x) {
 
         if (x < 0 || x >= size) {
-            System.out.println("setX : Error - x position out of range");
+            System.err.println("setX : Error - x position out of range");
         }
         else {
             this.x = x;
@@ -113,7 +113,7 @@ public class Pawn {
     public void setY(int y) {
 
         if (y < 0 || y >= size) {
-            System.out.println("setY : Error - x position out of range");
+            System.err.println("setY : Error - x position out of range");
         }
         else {
             this.y = y;
@@ -129,11 +129,38 @@ public class Pawn {
     public void setType(PawnType type) {
 
         if (type == null) {
-            System.out.println("setType : Error - null value for type");
+            System.err.println("setType : Error - null value for type");
         }
         else {
             this.type = type;
         }
+
+    }
+
+    /**
+     * check weither the case with x and y coordonates belongs to the ship or not
+     * @param x : x coordinate of the square checked
+     * @param y : y coordinate of the square checked
+     * @return true if so
+     */
+
+    public boolean contains(int x, int y) {
+
+        boolean contains = false;
+
+        if (x < 0 || x >= size) {
+            System.err.println("Contains : Error - x position out of range");
+        }
+        if (y < 0 || y >= size) {
+            System.err.println("Contains : Error - y position out of range");
+        }
+        if (x >= 0 && x < size || y >= 0 || y < size) {
+            if (x == this.x && y == this.y) {
+                contains = true;
+            }
+        }
+
+        return contains;
 
     }
 
