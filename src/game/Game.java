@@ -1,17 +1,22 @@
 package game;
 import java.util.*;
 
+import java.io.*;
+
 /**
  * Class wich describes all the actions of the game
  * @author B.Guillouzo
  */
 
-public class Game {
+public class Game implements Serializable {
 
     private ArrayList<Pawn> blackPawns;
     private ArrayList<Pawn> whitePawns;
     private Player player1;
     private Player player2;
+    private String name1;
+    private String name2;
+    private Mode mode;
     private Player currentPlayer;
     private ArrayList<Square> square; 
 
@@ -26,11 +31,45 @@ public class Game {
      * @param blackPawns : list containing all the black pawns
      * @param whitePawns : list containing all the white pawns
      * @param name1 : name of the first player
-     * @param name2 : nme of the second player
+     * @param name2 : name of the second player
+     * @param mode : mode of the game
      */
 
-    public Game(ArrayList<Pawn> blackPawns, ArrayList<Pawn> whitePawns, String name1, String name2) {
+    public Game(ArrayList<Pawn> blackPawns, ArrayList<Pawn> whitePawns, String name1, String name2, Mode mode) {
 
+        if (blackPawns == null) {
+            System.err.println("Game : Error - null value for blackPawns");
+        }
+        if (whitePawns == null) {
+            System.err.println("Game : Error - null value for whitePawns");
+        }
+        if (name1 == null) {
+            System.err.println("Game : Error - null value for the first name");
+        }
+        if (name2 == null) {
+            System.err.println("Game : Error - null value for the second name");
+        }
+        if (mode == null) {
+            System.err.println("Game : Error - null value for mode");
+        }
+        if (blackPawns != null && whitePawns != null && name1 != null && name2 != null && mode != null) {
+            this.blackPawns = blackPawns;
+            this.whitePawns = whitePawns;
+            this.name1 = name1;
+            this.name2 = name2;
+            this.mode = mode;
+
+            if (this.mode.equals(Mode.HH)) {
+                this.player1 = new HumanPlayer(this.name1, this.blackPawns);
+                this.player2 = new HumanPlayer(this.name2, this.whitePawns);
+            }
+            else {
+                this.player1 = new HumanPlayer(this.name1, this.blackPawns);
+                this.player2 = new AutoPlayer(this.name2, this.whitePawns);
+            }
+
+            this.currentPlayer = this.player1;
+        }
     }
 
     /**
@@ -67,6 +106,10 @@ public class Game {
 
         boolean aligned = false;
 
+        if (player.aligned()) {
+            aligned = true;
+        }
+
         return aligned;
 
     }
@@ -77,8 +120,8 @@ public class Game {
      */
 
     public ArrayList<Pawn> getBlackPawns() {
-        ArrayList<Pawn> pawns = new ArrayList<Pawn>();
-        return pawns;
+
+        return this.blackPawns;
     }
 
     /**
@@ -87,8 +130,9 @@ public class Game {
      */
 
     public ArrayList<Pawn> getWhitePawns() {
-        ArrayList<Pawn> pawns = new ArrayList<Pawn>();
-        return pawns;
+        
+        return this.whitePawns;
+
     }
 
 
@@ -99,6 +143,7 @@ public class Game {
      */
 
     public Player getCurrentPlayer() {
+
         return this.currentPlayer;
     }
 
@@ -107,6 +152,13 @@ public class Game {
      */
 
     public void changeCurrentPlayer() {
+
+        if (this.currentPlayer == this.player1) {
+            this.currentPlayer = this.player2;
+        }
+        else {
+            this.currentPlayer = this.player1;
+        }
 
     }
 
@@ -117,8 +169,10 @@ public class Game {
      */
 
     public int[] readMove(Player player) {
-        int[] tab = new int[2];
+        
+        int[] tab = player.newMove();
         return tab;
+
     }
 
     /**
@@ -128,7 +182,8 @@ public class Game {
      */
 
     public Pawn readPawn(Player player) {
-        Pawn pawn = new Pawn();
+        
+        Pawn pawn = player.choosePawn();
         return pawn;
     }
 
@@ -139,7 +194,8 @@ public class Game {
      */
 
     public ZenType readZen(Player player) {
-        ZenType type = ZenType.FRIEND;
+
+        ZenType type = player.chooseZen();
         return type;
     }
 
@@ -172,6 +228,50 @@ public class Game {
 
     public void changeZen() {
 
+        boolean pawned = false;
+        int i = this.blackPawns.size()-1;
+        int j = this.whitePawns.size()-1;
+        Pawn zen1 = new Pawn();
+        Pawn zen2 = new Pawn();
+
+        if (this.currentPlayer == this.player1) {
+            if (this.blackPawns.get(i).getType().equals(PawnType.ZEN)) {
+                zen1 = this.blackPawns.get(i);
+                pawned = true;
+            }
+            if (pawned) {
+                if (this.readZen(this.currentPlayer).equals(ZenType.OPPONENT)) {
+                    this.blackPawns.remove(i);
+                    this.whitePawns.add(zen1);
+                }
+            }
+            else {
+                if (this.readZen(this.currentPlayer).equals(ZenType.FRIEND)) {
+                    zen2 = this.whitePawns.get(j);
+                    this.whitePawns.remove(j);
+                    this.blackPawns.add(zen2);
+                }
+            }
+        }
+        else {
+            if (this.whitePawns.get(j).getType().equals(PawnType.ZEN)) {
+                zen1 = this.whitePawns.get(j);
+                pawned = true;
+            }
+            if (pawned) {
+                if (this.readZen(this.player2).equals(ZenType.OPPONENT)) {
+                    this.whitePawns.remove(j);
+                    this.blackPawns.add(zen1);
+                }
+            }
+            else {
+                if (this.readZen(this.player2).equals(ZenType.FRIEND)) {
+                    zen2 = this.blackPawns.get(i);
+                    this.blackPawns.remove(i);
+                    this.whitePawns.add(zen2);
+                }
+            }
+        }
     }
 
     /**

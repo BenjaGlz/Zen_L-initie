@@ -20,6 +20,17 @@ public abstract class Player {
 
     public Player(String name, ArrayList<Pawn> pawns) {
 
+        if (name == null) {
+            System.err.println("Player : Error - null value for name");
+        }
+        if (pawns == null) {
+            System.err.println("Player : Error - null value for pawns");
+        }
+        if (name != null && pawns != null) {
+            this.name = name;
+            this.pawns = pawns;
+        }
+
     }
 
     /**
