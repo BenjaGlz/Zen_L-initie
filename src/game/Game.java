@@ -1,7 +1,7 @@
 package game;
 import java.util.*;
-
 import java.io.*;
+import javax.swing.*;
 
 /**
  * Class wich describes all the actions of the game
@@ -19,6 +19,7 @@ public class Game implements Serializable {
     private Mode mode;
     private Player currentPlayer;
     private ArrayList<Square> square; 
+    private static final int size = 11;
 
     /**
      * First constructor of the Game class
@@ -78,6 +79,9 @@ public class Game implements Serializable {
 
     public void start() {
 
+        this.displayGrid();
+        System.out.println(this.rules());
+
     }
 
     /**
@@ -94,6 +98,38 @@ public class Game implements Serializable {
     
     public void displayGrid() {
 
+        String[][] grid = new String[size][size];
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                grid[i][j] = "  *  ";
+            }
+        }
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                for (Pawn p : this.blackPawns) {
+                    if (p.contains(i, j)) {
+                        grid[i][j] = "  X  ";
+                    }
+                }
+                for (Pawn p : this.whitePawns) {
+                    if (p.contains(i, j)) {
+                        grid[i][j] = "  O  ";
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                System.out.print(grid[i][j]);
+                if (j == size -1) {
+                    System.out.println("\n");
+                }
+            }
+        }        
+
     }
 
     /**
@@ -106,8 +142,13 @@ public class Game implements Serializable {
 
         boolean aligned = false;
 
-        if (player.aligned()) {
-            aligned = true;
+        if (player == null) {
+            System.out.println("aligned : Error - null value for player");
+        }
+        else {
+            if (player.aligned()) {
+                aligned = true;
+            }
         }
 
         return aligned;
@@ -169,8 +210,16 @@ public class Game implements Serializable {
      */
 
     public int[] readMove(Player player) {
+
+        int[] tab = new int[2];
+
+        if (player == null) {
+            System.out.println("readMove : Error - null value for player");
+        }
+        else {
+            tab = player.newMove();
+        }
         
-        int[] tab = player.newMove();
         return tab;
 
     }
@@ -183,7 +232,15 @@ public class Game implements Serializable {
 
     public Pawn readPawn(Player player) {
         
-        Pawn pawn = player.choosePawn();
+        Pawn pawn = new Pawn();
+        
+        if (player == null) {
+            System.out.println("readPawn : Error - null value for player");
+        }
+        else {
+            player.choosePawn();
+        }
+
         return pawn;
     }
 
@@ -195,7 +252,15 @@ public class Game implements Serializable {
 
     public ZenType readZen(Player player) {
 
-        ZenType type = player.chooseZen();
+        ZenType type = ZenType.FRIEND;
+
+        if (player == null) {
+            System.out.println("readPawn : Error - null value for player");
+        }
+        else {
+            type = player.chooseZen();
+        }
+
         return type;
     }
 
@@ -207,8 +272,115 @@ public class Game implements Serializable {
      * @return true if the square is reachable
      */
 
-    public boolean movePossible(Pawn pawn, int[] coordinates, ZenType type) {
-        boolean possible = false;
+    public boolean movePossible(Pawn pawn, int[] coordinates) {
+        
+        boolean possible = true;
+
+        if (pawn == null) {
+            System.out.println("movePossible : Error - null value for pawn");
+        }
+        if (coordinates[0] < 0 || coordinates[0] >= size || coordinates[1] < 0 || coordinates[1] >= size) {
+            System.out.println("movePossible : Error - coordinates of out range");
+        }
+        if (pawn != null && coordinates[0] >= 0 && coordinates[0] < size && coordinates[1] >= 0 && coordinates[1] < size) {
+            if (coordinates[0] == pawn.getX()) {
+                if (coordinates[1] > pawn.getY()) {
+                    for (int i = pawn.getY()+1; i <= coordinates[1] ; i++) {
+                        boolean contains = false;
+                        if (this.currentPlayer == this.player1) {
+                            for (Pawn p : this.blackPawns) {
+                                if (p.contains(coordinates[0], i)) {
+                                    contains = true;
+                                }
+                            }
+                        }
+                        else {
+                            for (Pawn p : this.whitePawns) {
+                                if (p.contains(coordinates[0], i)) {
+                                    contains = true;
+                                }
+                            }
+                        }
+                        if (contains) {
+                            possible = false;
+                        }
+                    }
+                }
+                else if (coordinates[1] < pawn.getY()) {
+                    for (int i = pawn.getY()-1; i >= coordinates[1] ; i--) {
+                        boolean contains = false;
+                        if (this.currentPlayer == this.player1) {
+                            for (Pawn p : this.blackPawns) {
+                                if (p.contains(coordinates[0], i)) {
+                                    contains = true;
+                                }
+                            }
+                        }
+                        else {
+                            for (Pawn p : this.whitePawns) {
+                                if (p.contains(coordinates[0], i)) {
+                                    contains = true;
+                                }
+                            }
+                        }
+                        if (contains) {
+                            possible = false;
+                        }
+                    }
+                }
+                
+            }
+            else if (coordinates[1] == pawn.getY()) {
+                if (coordinates[0] > pawn.getX()) {
+                    for (int i = pawn.getX()+1; i <= coordinates[0] ; i++) {
+                        boolean contains = false;
+                        if (this.currentPlayer == this.player1) {
+                            for (Pawn p : this.blackPawns) {
+                                if (p.contains(i, coordinates[1])) {
+                                    contains = true;
+                                }
+                            }
+                        }
+                        else {
+                            for (Pawn p : this.whitePawns) {
+                                if (p.contains(i,coordinates[1])) {
+                                    contains = true;
+                                }
+                            }
+                        }
+                        if (contains) {
+                            possible = false;
+                        }
+                    }
+                }
+                else if (coordinates[0] < pawn.getX()) {
+                    for (int i = pawn.getX()-1; i >= coordinates[0] ; i--) {
+                        boolean contains = false;
+                        if (this.currentPlayer == this.player1) {
+                            for (Pawn p : this.blackPawns) {
+                                if (p.contains(i, coordinates[1])) {
+                                    contains = true;
+                                }
+                            }
+                        }
+                        else {
+                            for (Pawn p : this.whitePawns) {
+                                if (p.contains(i, coordinates[1])) {
+                                    contains = true;
+                                }
+                            }
+                        }
+                        if (contains) {
+                            possible = false;
+                        }
+                    }
+                }
+            }
+            else{
+                possible = false;
+            }
+        }
+
         return possible;
     }
 
@@ -219,6 +391,21 @@ public class Game implements Serializable {
      */
 
     public void move(Pawn pawn, int[] coordinate) {
+
+        boolean possible = true;
+
+        if (pawn == null) {
+            System.out.println("move : Error - null value for pawn");
+        }
+        if (coordinate[0] < 0 || coordinate[0] >= size || coordinate[1] < 0 || coordinate[1] >= size) {
+            System.out.println("move : Error - coordinates of out range");
+        }
+       /**  if (pawn != null && coordinate[0] >= 0 && coordinate[0] < size && coordinate[1] >= 0 && coordinate[1] < size) {
+            do {
+                this.currentPlayer.
+            }
+        }*/
+
 
     }
 
@@ -280,14 +467,41 @@ public class Game implements Serializable {
      */
 
     public String rules() {
-        return "";
+
+        ArrayList<String> infos = new ArrayList<String>();
+        String rules = "";
+
+        try { 
+            Scanner sc = new Scanner(new FileReader("../data/regles.txt"));
+            sc.useDelimiter("\\s*/\\s*");
+            while (sc.hasNext()) {
+                infos.add(sc.next());
+            }
+            sc.close();
+
+            for (int i = 0; i < infos.size(); i++) {
+                rules += infos.get(i) + "\n";
+            }
+
+        } catch(FileNotFoundException f){
+            System.out.println("rules : Error - file not found");
+        } catch(NoSuchElementException n) {
+            System.out.println("rules : Error - no more token available");
+        }
+
+        return rules;
     }
 
     /**
      * End the game
+     * @param player : player who won the game
      */
 
-    public void end() {
+    public void end(Player player) {
+
+        JFrame frame = new JFrame();
+        JOptionPane.showMessageDialog(frame, "Both of you fought well but at the end a winner has to be chosen !\nPlease give a warm applause to " + player.getName() + " for his win !\nHe will now have his name written in the Hall of Fame !");
+        System.exit(0);
 
     }
 

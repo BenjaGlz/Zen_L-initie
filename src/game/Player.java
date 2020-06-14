@@ -34,6 +34,15 @@ public abstract class Player {
     }
 
     /**
+     * Get the name of the player
+     * @return the name as a String
+     */
+
+    public String getName() {
+        return this.name;
+    }
+
+    /**
      * Let the player choose the pawn he wants to move
      * @return return the pawn he wants to move
      */

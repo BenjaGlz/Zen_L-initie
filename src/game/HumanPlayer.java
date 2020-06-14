@@ -1,5 +1,7 @@
 package game;
 import java.util.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * Define all what a human player do
@@ -28,25 +30,26 @@ public class HumanPlayer extends Player {
     public Pawn choosePawn() {
 
         Pawn pawn = new Pawn();
+        boolean good = false;
         int x = 0;
         int y = 0;
+        JFrame frame = new JFrame();
 
-        try {
-            Scanner sc = new Scanner(System.in);
-            do {
-                System.out.println("Write the x coordinate of the pawn you wanna move");
-                x = sc.nextInt();      
-            } while (x < 0 || x >= size );
-
-            do {
-                System.out.println("Write the x coordinate of the pawn you wanna move");
-                y = sc.nextInt();      
-            } while (y < 0 || y >= size );
-            sc.close();
-        } catch(InputMismatchException i) {
-            System.err.println("newMove : Error - token is not an integer expression");
-        } catch(NoSuchElementException n) {
-            System.err.println("chooseZen : Error - no token available");
+        while (!good) {
+            try {
+                String xString = JOptionPane.showInputDialog(frame, "Write x coordinate of the square you wanna move the pawn to : ");
+                String yString = JOptionPane.showInputDialog(frame, "Write y coordinate of the square you wanna move the pawn to : ");
+                x = Integer.parseInt(xString);
+                y = Integer.parseInt(yString);
+                if (x >= 0 && x < size && y >= 0 && y < size) {
+                    good = true;
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "Coordinates have to belong to the grid");
+                }  
+            } catch(NumberFormatException n) {
+                JOptionPane.showMessageDialog(frame, "Coordinates have to be integers");
+            }
         }
 
         for (Pawn p : this.pawns) {
@@ -68,17 +71,11 @@ public class HumanPlayer extends Player {
 
         ZenType type = ZenType.FRIEND;
         String pawn = "";
+        JFrame frame = new JFrame();
 
-        try {
-            Scanner sc = new Scanner(System.in);
-            do {
-                System.out.println("Write 'friend' if you want to use the Zen pawn as a team member, 'opponent' otherwise");
-                pawn = sc.next().toUpperCase();
-            } while (!pawn.equals("FRIEND") || !pawn.equals("OPPONENT"));
-            sc.close();
-        } catch(NoSuchElementException n){
-            System.err.println("chooseZen : Error - no token available");
-        }
+        do {
+            pawn = JOptionPane.showInputDialog(frame, "Write 'friend' if you want to use the Zen pawn as a team member, 'opponent' otherwise");
+        } while (!pawn.equalsIgnoreCase("FRIEND") || !pawn.equalsIgnoreCase("OPPONENT"));
 
         if (pawn.equals("FRIEND")) {
             type = ZenType.FRIEND;

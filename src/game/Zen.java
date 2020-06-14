@@ -1,6 +1,8 @@
 package game;
 import save.*;
 import java.util.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * Class which set up the game all along it
@@ -31,24 +33,18 @@ public class Zen {
 
             boolean save = this.launch();
             String gameFile = "";
+            JFrame frame = new JFrame();
 
-            if (save) {
-                try {
-                    Scanner sc = new Scanner(System.in);
-                    do {
-                        System.out.println("Write the name of the file containing the game you wanna load");
-                        gameFile = "../../data/" +sc.next();
-                    }  while (gameFile == null);
-                    sc.close();
-                } catch(NoSuchElementException n){
-                    System.err.println("Zen : Error - no token available");
-                } 
-
+            if (save) {  
+                do {
+                    gameFile = "../../data/" + JOptionPane.showInputDialog(frame, "Write the name of the file containing the game you wanna load");
+                }  while (gameFile == null);
                 this.game = LoadGame.loadGame(gameFile);
             }
             else {  
                 this.configure();
                 Game game = new Game(this.blackPawns, this.whitePawns, name1, name2, this.mode);
+                game.start();
             }
 
         }
@@ -59,19 +55,13 @@ public class Zen {
 
         boolean launch = false;
         String saved = "";
+        JFrame frame = new JFrame();
+        
+        do {
+            saved = JOptionPane.showInputDialog(frame, "Write 'yes' if you want to launch a saved game, 'no' otherwise");
+        } while (!saved.equalsIgnoreCase("YES") && !saved.equalsIgnoreCase("NO"));     
 
-        try {
-            Scanner sc = new Scanner(System.in);
-            do {
-                System.out.println("Write 'yes' if you want to launch a saved game, 'no' otherwise");
-                saved = sc.next();
-            } while (!saved.equalsIgnoreCase("YES") || !saved.equalsIgnoreCase("NO"));
-            sc.close();
-        } catch(NoSuchElementException e){
-            System.err.println("launch : Error - no token available");
-        }
-
-        if (saved.equals("YES")) {
+        if (saved.equalsIgnoreCase("YES")) {
             launch = true;
         }
 
@@ -116,17 +106,12 @@ public class Zen {
         this.whitePawns.add(new Pawn(5, 10, PawnType.WHITE));
 
         String mode = "";
-
-        try {
-            Scanner sc = new Scanner(System.in);
-            do {
-                System.out.println("Write 'HH' if you want to play against a friend, 'HA' for against a bot");
-                mode = sc.next();
-            } while (!mode.equalsIgnoreCase("HH") || !mode.equalsIgnoreCase("HA"));
-            sc.close();
-        } catch(NoSuchElementException n){
-            System.err.println("launch : Error - no token available");
-        }
+        JFrame frame = new JFrame();
+        
+        do {
+            mode = JOptionPane.showInputDialog(frame, "Write 'HH' if you want to play against a friend, 'HA' for against a bot");
+        } while (!mode.equalsIgnoreCase("HH") && !mode.equalsIgnoreCase("HA"));
+        
 
         if (mode.equals("HH")) {
             this.mode = Mode.HH;
