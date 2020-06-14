@@ -1,5 +1,6 @@
 package save;
 import game.*;
+import java.io.*;
 
 /**
  * Save the game 
@@ -15,6 +16,19 @@ public class SaveGame {
      */
 
     public static void saveGame(Game game, String filename) {
+
+        try {
+            FileOutputStream output = new FileOutputStream(filename);
+            ObjectOutputStream data = new ObjectOutputStream(output);
+
+            data.writeObject(game);
+            data.close();
+
+        } catch (FileNotFoundException f) {
+            System.out.println("saveGame : Error - File not found") ;
+        } catch (IOException i) {
+            System.out.println("read : Error - input/output exception");
+        } 
 
     }
     
