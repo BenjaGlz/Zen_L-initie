@@ -1,7 +1,5 @@
 package game;
 import java.util.*;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  * Define all what a human player do
@@ -31,32 +29,21 @@ public class HumanPlayer extends Player {
 
         Pawn pawn = new Pawn();
         boolean good = false;
-        int x = 0;
-        int y = 0;
-        JFrame frame = new JFrame();
 
-        while (!good) {
-            try {
-                String xString = JOptionPane.showInputDialog(frame, "Write x coordinate of the square you wanna move the pawn to : ");
-                String yString = JOptionPane.showInputDialog(frame, "Write y coordinate of the square you wanna move the pawn to : ");
-                x = Integer.parseInt(xString);
-                y = Integer.parseInt(yString);
-                if (x >= 0 && x < size && y >= 0 && y < size) {
+        do {
+            System.out.println("\nWrite the x coordinate of the pawn you want to move");
+            int x = SC.nextInt();
+            System.out.println("\nWrite the y coordinate of the pawn you want to move");
+            int y = SC.nextInt();
+
+            for (Pawn p : this.pawns) {
+                if (p.contains(x, y)) {
+                    pawn = p;
                     good = true;
                 }
-                else {
-                    JOptionPane.showMessageDialog(frame, "Coordinates have to belong to the grid");
-                }  
-            } catch(NumberFormatException n) {
-                JOptionPane.showMessageDialog(frame, "Coordinates have to be integers");
             }
-        }
 
-        for (Pawn p : this.pawns) {
-            if (p.contains(x, y)) {
-                pawn = p;
-            }
-        }
+        } while(!good);
 
         return pawn;
 
@@ -71,13 +58,17 @@ public class HumanPlayer extends Player {
 
         ZenType type = ZenType.FRIEND;
         String pawn = "";
-        JFrame frame = new JFrame();
+
+        System.out.println("Your turn to play " +this.getName()+ "\n");
+
+        
 
         do {
-            pawn = JOptionPane.showInputDialog(frame, "Write 'friend' if you want to use the Zen pawn as a team member, 'opponent' otherwise");
-        } while (!pawn.equalsIgnoreCase("FRIEND") || !pawn.equalsIgnoreCase("OPPONENT"));
+            System.out.println("\nWrite 'friend' if you want to use the Zen pawn as a team member, 'opponent' otherwise");
+            pawn = SC.nextLine();
+        } while (!pawn.equalsIgnoreCase("FRIEND") && !pawn.equalsIgnoreCase("OPPONENT"));
 
-        if (pawn.equals("FRIEND")) {
+        if (pawn.equalsIgnoreCase("FRIEND")) {
             type = ZenType.FRIEND;
         }
         else {
@@ -99,23 +90,15 @@ public class HumanPlayer extends Player {
         int x = 0;
         int y = 0;
 
-        try {
-            Scanner sc = new Scanner(System.in);
-            do {
-                System.out.println("Write the x coordinate you wanna move to");
-                x = sc.nextInt();      
-            } while (x < 0 || x >= size );
+        do {
+            System.out.println("\nWrite the x coordinate you wanna move to");
+            x = SC.nextInt();      
+        } while (x < 0 || x >= size );
 
-            do {
-                System.out.println("Write the y coordinate you wanna move to");
-                y = sc.nextInt();      
-            } while (y < 0 || y >= size );
-            sc.close();
-        } catch(InputMismatchException i) {
-            System.err.println("newMove : Error - token is not an integer expression");
-        } catch(NoSuchElementException n) {
-            System.err.println("chooseZen : Error - no token available");
-        } 
+        do {
+            System.out.println("\nWrite the y coordinate you wanna move to");
+            y = SC.nextInt();      
+        } while (y < 0 || y >= size );
 
         move[0] = x;
         move[1] = y;

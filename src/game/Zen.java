@@ -1,8 +1,6 @@
 package game;
 import save.*;
 import java.util.*;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  * Class which set up the game all along it
@@ -16,6 +14,7 @@ public class Zen {
     private Mode mode;
     private ArrayList<Pawn> blackPawns;
     private ArrayList<Pawn> whitePawns;
+    private static final Scanner SC = new Scanner(System.in);
 
     /**
      * Constructor of the Zen class
@@ -33,33 +32,32 @@ public class Zen {
 
             boolean save = this.launch();
             String gameFile = "";
-            JFrame frame = new JFrame();
 
             if (save) {  
                 do {
-                    gameFile = "../../data/" + JOptionPane.showInputDialog(frame, "Write the name of the file containing the game you wanna load");
-                }  while (gameFile == null);
+                    System.out.println("Write the name of the file containing the game you wanna load :");
+                    gameFile = "../data/" + SC.nextLine();
+                }  while (gameFile == null && SC.hasNextLine());
                 this.game = LoadGame.loadGame(gameFile);
+                this.game.start();
             }
             else {  
                 this.configure();
-                Game game = new Game(this.blackPawns, this.whitePawns, name1, name2, this.mode);
-                game.start();
+                this.game = new Game(this.blackPawns, this.whitePawns, name1, name2, this.mode);
+                this.game.start();
             }
-
         }
-
      }
 
      public boolean launch() {
 
         boolean launch = false;
         String saved = "";
-        JFrame frame = new JFrame();
         
         do {
-            saved = JOptionPane.showInputDialog(frame, "Write 'yes' if you want to launch a saved game, 'no' otherwise");
-        } while (!saved.equalsIgnoreCase("YES") && !saved.equalsIgnoreCase("NO"));     
+            System.out.println("\n\nNew game or saved game ?\n* 'Yes' to launch a saved game\n* 'No' to start a new game");
+            saved = SC.nextLine();
+        } while (!saved.equalsIgnoreCase("YES") && !saved.equalsIgnoreCase("NO"));    
 
         if (saved.equalsIgnoreCase("YES")) {
             launch = true;
@@ -106,14 +104,13 @@ public class Zen {
         this.whitePawns.add(new Pawn(5, 10, PawnType.WHITE));
 
         String mode = "";
-        JFrame frame = new JFrame();
         
         do {
-            mode = JOptionPane.showInputDialog(frame, "Write 'HH' if you want to play against a friend, 'HA' for against a bot");
-        } while (!mode.equalsIgnoreCase("HH") && !mode.equalsIgnoreCase("HA"));
-        
+            System.out.println("\n\nMode of the game\n* 'HH' for a multiplayer game\n* 'HA' for a game against a bot");
+            mode = SC.nextLine();
+        } while (!mode.equalsIgnoreCase("HH") && !mode.equalsIgnoreCase("HA") && SC.hasNextLine());
 
-        if (mode.equals("HH")) {
+        if (mode.equalsIgnoreCase("HH")) {
             this.mode = Mode.HH;
         }
         else {
@@ -123,9 +120,3 @@ public class Zen {
 
      }
 }
-
-/**
- * garder zentype
- * si zentype = opponent --> mettre dans arraylist du pas current player
- * pour trouver le zen --> parcourir liste jusqua trouver type = zen avec getType
- */

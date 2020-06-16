@@ -1,11 +1,13 @@
 package game;
 
+import java.io.Serializable;
+
 /**
  * Creates a Pawn object 
  * @author B.Guillouzo
  */
 
-public class Pawn {
+public class Pawn implements Serializable{
 
     private int y;
     private int x;
@@ -54,7 +56,7 @@ public class Pawn {
 
         boolean isZen = false;
 
-        if (this.type == PawnType.ZEN) {
+        if (this.type.equals(PawnType.ZEN)) {
             isZen = true;
         }
 
@@ -138,7 +140,7 @@ public class Pawn {
     }
 
     /**
-     * check weither the case with x and y coordonates belongs to the ship or not
+     * check weither the case with x and y coordinates belongs to the ship or not
      * @param x : x coordinate of the square checked
      * @param y : y coordinate of the square checked
      * @return true if so
@@ -162,6 +164,23 @@ public class Pawn {
 
         return contains;
 
+    }
+
+    public String toString() {
+
+        String string = this.getX() + " " + this.getY();
+
+        if (this.getType().equals(PawnType.BLACK)) {
+            string += " black";
+        }
+        else if (this.getType().equals(PawnType.WHITE)) {
+            string += " white";
+        }
+        else if (this.getType().equals(PawnType.ZEN)) {
+            string += " zen";
+        }
+
+        return string;
     }
 
     

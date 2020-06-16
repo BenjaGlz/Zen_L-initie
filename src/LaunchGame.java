@@ -1,8 +1,5 @@
 import game.*;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  * Launches the whole game of Zen
@@ -11,15 +8,19 @@ import javax.swing.JOptionPane;
 
  public class LaunchGame {
 
-    public static void main(String[] args) {  
+   private static final Scanner SC = new Scanner(System.in);
 
-    JFrame frame = new JFrame();
+   public static void main(String[] args) { 
 
-    String name1 = JOptionPane.showInputDialog(frame, "Write the name of the first player");
-    String name2 = JOptionPane.showInputDialog(frame, "Write the name of the second player");
+      System.out.println("\n\n   ▄▄▄▄▄▄   ▄███▄      ▄       █    ▄█    ▄   ▄█    ▄▄▄▄▀ ▄█ ▄███▄\n  ▀   ▄▄▀   █▀   ▀      █      █    ██     █  ██ ▀▀▀ █    ██ █▀   ▀  \n   ▄▀▀   ▄▀ ██▄▄    ██   █     █    ██ ██   █ ██     █    ██ ██▄▄    \n   ▀▀▀▀▀▀   █▄   ▄▀ █ █  █     ███▄ ▐█ █ █  █ ▐█    █     ▐█ █▄   ▄▀ \n            ▀███▀   █  █ █         ▀ ▐ █  █ █  ▐   ▀       ▐ ▀███▀   \n                    █   ██             █   ██\n\n                        ");
 
-     Zen zen = new Zen(name1, name2);
+      System.out.println("\nWrite the name of the first player");
+      String name1 = SC.next();
+      System.out.println("\nWrite the name of the second player");
+      String name2 = SC.next();
+
+      Zen zen = new Zen(name1, name2);
         
-    }
+   }
 
- }
+}

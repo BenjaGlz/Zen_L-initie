@@ -1,4 +1,5 @@
 package game;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -6,11 +7,13 @@ import java.util.*;
  * @author B.Guillouzo
  */
 
-public abstract class Player {
+public abstract class Player implements Serializable {
 
     protected String name;
     protected ArrayList<Pawn> pawns;
     protected static final int size = 11;
+    protected static final Scanner SC = new Scanner(System.in);
+    private ArrayList<Pawn> tagged;
 
     /**
      * Constructor of the Player class
@@ -71,9 +74,61 @@ public abstract class Player {
     public boolean aligned() {
 
         boolean aligned = false;
+        int j = 0;
+        this.tagged = new ArrayList<Pawn>();
+        ArrayList<Pawn> stack = new ArrayList<>();
+
+        tagged.add(this.pawns.get(0));
+        stack.add(this.pawns.get(0));
+
+        while (!stack.isEmpty()) {
+            stack.remove(0);
+            Pawn p = this.nextPawn(stack.get(0));
+            while (p != null) {
+                Pawn z = p;
+                stack.add(z);
+                this.tagged.add(z);
+            }
+        }
+
+        int i = this.tagged.size();
+    
+        System.out.println(i);
+
+        for (Pawn p : this.pawns) {
+            j++;
+        }
+        System.out.println(j);
+
+        if (i == j) {
+            aligned = true;
+        }
 
         return aligned;
 
     }
-    
+
+    public Pawn nextPawn(Pawn pawn) {
+
+        Pawn p = new Pawn();
+        boolean contained = false;
+
+        if (pawn == null) {
+            System.out.println("nextTo : Error - null value for pawn");
+        }
+        else {
+            for (Pawn pa : this.pawns) {
+                for (Pawn paw : this.tagged) {
+                    if (pa.equals(paw)) {
+                        contained = true;
+                    }
+                }
+                if (((pawn.getY()-1 >= 0 && p.contains(pawn.getX(), pawn.getY()-1)) || (pawn.getX()+1 < size && pawn.getY()-1 >= 0 && p.contains(pawn.getX()+1, pawn.getY()-1)) || (pawn.getX()+1 < size && p.contains(pawn.getX()+1, pawn.getY())) || (pawn.getX()+1 < size && pawn.getY()+1 < size && p.contains(pawn.getX()+1, pawn.getY()+1)) || (pawn.getY()+1 < size && p.contains(pawn.getX(), pawn.getY()+1)) || (pawn.getX()-1 >= 0 && pawn.getY()+1 < size && p.contains(pawn.getX()-1, pawn.getY()+1)) || (pawn.getX()-1 >= 0 && p.contains(pawn.getX()-1, pawn.getY())) || (pawn.getX()-1 >= 0 && pawn.getY()-1 >= 0 && p.contains(pawn.getX()-1, pawn.getY()-1))) && !contained) {
+                    p = pa;
+                }
+            }
+        }
+        return p;
+    }
 }
+

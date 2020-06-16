@@ -1,11 +1,13 @@
 package game;
 
+import java.io.Serializable;
+
 /**
  * Describes the squares of the grid
  * @author B.Guillouzo
  */
 
-public class Square {
+public class Square implements Serializable{
 
     private int x;
     private int y;
@@ -54,6 +56,16 @@ public class Square {
     public void setBusy() {
 
         this.free = false;
+
+    }
+
+    /**
+     * Sets the case to free
+     */
+
+    public void setFree() {
+
+        this.free = true;
 
     }
     
