@@ -1,0 +1,27 @@
+-------------------- RULES OF THE GAME -------------------- /
+                                        /
+Duration of a game: 15 to 30 minutes. /
+                                        /
+Contents: 1 board of 121 squares, 12 black pawns, 12 white pawns, 1 pawn called "Zen". /
+                                        /
+Aim of the game: the winner is the first player who manages to form a continuous chain with all /
+of his pawns still on the board, including "Zen", if it is still in play. /
+                                        /
+The pawns are arranged on the board in a prescribed pattern. /
+Flow of the game: each player in turn moves a pawn of his color or "Zen" according to 4 very simple rules. /
+                                        /
+Rule #1: pawns move in a straight line in any direction. /
+A pawn must always move as many squares as there are pawns on the chosen line of movement /
+(horizontal or vertical or diagonal). All pawns are taken into account, including the moved pawn. /
+                                        /
+Rule #2: Any pawn may pass over one or more pawns of its own color, but never over those of its opponent. /
+                                        /
+Rule #3: any pawn may capture an opposing pawn by placing itself on the square occupied by the captured pawn in accordance with rule #1./
+The captured pawn is then removed from the game for good. /
+                                        /
+Rule #4 : at each move, the "Zen" pawn common to all players can be either white or black depending on the interest of the one who plays. /
+It moves like the other pieces, but can also be taken. /
+                                        /
+Pawn rule : The Zen pawn cannot be moved if none of the squares around it are occupied. /
+                                        /
+-----------------------------------------------------------/

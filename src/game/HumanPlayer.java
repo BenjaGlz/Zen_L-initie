@@ -36,13 +36,20 @@ public class HumanPlayer extends Player {
             System.out.println("\nWrite the y coordinate of the pawn you want to move");
             int y = SC.nextInt();
 
-            for (Pawn p : this.pawns) {
-                if (p.contains(x, y)) {
-                    pawn = p;
-                    good = true;
+            if (x < 0 || x >= size || y < 0 || y >= size) {
+                System.out.println("\n#####################################################\n#x or y coordinate out of range, please choose again#\n#####################################################\n");
+            }
+            else {
+                for (Pawn p : this.pawns) {
+                    if (p.contains(x, y)) {
+                        pawn = p;
+                        good = true;
+                    }
+                }
+                if (!good) {
+                    System.out.println("\n#######################################################################################\n#The pawn you want to move doesn't belong to you or doesn't exist, please choose again#\n#######################################################################################\n");
                 }
             }
-
         } while(!good);
 
         return pawn;
@@ -59,13 +66,16 @@ public class HumanPlayer extends Player {
         ZenType type = ZenType.FRIEND;
         String pawn = "";
 
-        System.out.println("Your turn to play " +this.getName()+ "\n");
+        System.out.println("====================[ It's your turn to play " +this.getName()+ " ]====================\n");
 
         
 
         do {
             System.out.println("\nWrite 'friend' if you want to use the Zen pawn as a team member, 'opponent' otherwise");
-            pawn = SC.nextLine();
+            pawn = SC.next();
+            if (!pawn.equalsIgnoreCase("FRIEND") && !pawn.equalsIgnoreCase("OPPONENT")) {
+                System.out.println("\n###################################\n#Wrong choice, please choose again#\n###################################\n");
+            }
         } while (!pawn.equalsIgnoreCase("FRIEND") && !pawn.equalsIgnoreCase("OPPONENT"));
 
         if (pawn.equalsIgnoreCase("FRIEND")) {
@@ -92,12 +102,18 @@ public class HumanPlayer extends Player {
 
         do {
             System.out.println("\nWrite the x coordinate you wanna move to");
-            x = SC.nextInt();      
+            x = SC.nextInt(); 
+            if (x < 0 || x >= size) {
+                System.out.println("\n################################################\n#x coordinate out of range, please choose again#\n################################################\n");
+            }     
         } while (x < 0 || x >= size );
 
         do {
             System.out.println("\nWrite the y coordinate you wanna move to");
-            y = SC.nextInt();      
+            y = SC.nextInt();     
+            if (y < 0 || y >= size) {
+                System.out.println("\n################################################\n#y coordinate out of range, please choose again#\n################################################\n");
+            } 
         } while (y < 0 || y >= size );
 
         move[0] = x;

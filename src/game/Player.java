@@ -1,4 +1,5 @@
 package game;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -83,9 +84,8 @@ public abstract class Player implements Serializable {
 
         while (!stack.isEmpty()) {
             stack.remove(0);
-            Pawn p = this.nextPawn(stack.get(0));
-            while (p != null) {
-                Pawn z = p;
+            Pawn z = this.nextPawn(stack.get(0));
+            while (z != null) {
                 stack.add(z);
                 this.tagged.add(z);
             }
@@ -114,7 +114,7 @@ public abstract class Player implements Serializable {
         boolean contained = false;
 
         if (pawn == null) {
-            System.out.println("nextTo : Error - null value for pawn");
+            System.out.println("nextPawn : Error - null value for pawn");
         }
         else {
             for (Pawn pa : this.pawns) {
@@ -123,7 +123,7 @@ public abstract class Player implements Serializable {
                         contained = true;
                     }
                 }
-                if (((pawn.getY()-1 >= 0 && p.contains(pawn.getX(), pawn.getY()-1)) || (pawn.getX()+1 < size && pawn.getY()-1 >= 0 && p.contains(pawn.getX()+1, pawn.getY()-1)) || (pawn.getX()+1 < size && p.contains(pawn.getX()+1, pawn.getY())) || (pawn.getX()+1 < size && pawn.getY()+1 < size && p.contains(pawn.getX()+1, pawn.getY()+1)) || (pawn.getY()+1 < size && p.contains(pawn.getX(), pawn.getY()+1)) || (pawn.getX()-1 >= 0 && pawn.getY()+1 < size && p.contains(pawn.getX()-1, pawn.getY()+1)) || (pawn.getX()-1 >= 0 && p.contains(pawn.getX()-1, pawn.getY())) || (pawn.getX()-1 >= 0 && pawn.getY()-1 >= 0 && p.contains(pawn.getX()-1, pawn.getY()-1))) && !contained) {
+                if (((pawn.getY()-1 >= 0 && pa.contains(pawn.getX(), pawn.getY()-1)) || (pawn.getX()+1 < size && pawn.getY()-1 >= 0 && pa.contains(pawn.getX()+1, pawn.getY()-1)) || (pawn.getX()+1 < size && pa.contains(pawn.getX()+1, pawn.getY())) || (pawn.getX()+1 < size && pawn.getY()+1 < size && pa.contains(pawn.getX()+1, pawn.getY()+1)) || (pawn.getY()+1 < size && pa.contains(pawn.getX(), pawn.getY()+1)) || (pawn.getX()-1 >= 0 && pawn.getY()+1 < size && pa.contains(pawn.getX()-1, pawn.getY()+1)) || (pawn.getX()-1 >= 0 && pa.contains(pawn.getX()-1, pawn.getY())) || (pawn.getX()-1 >= 0 && pawn.getY()-1 >= 0 && pa.contains(pawn.getX()-1, pawn.getY()-1))) && !contained) {
                     p = pa;
                 }
             }

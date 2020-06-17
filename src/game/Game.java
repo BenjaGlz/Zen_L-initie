@@ -1,9 +1,11 @@
 package game;
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
 
-import save.LoadGame;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.io.FileReader;
+import java.io.Serializable;
+import java.io.FileNotFoundException;
 import save.SaveGame;
 
 /**
@@ -108,15 +110,31 @@ public class Game implements Serializable {
             }
 
             this.move();
-            //won = this.aligned(this.currentPlayer);
+            won = this.aligned(this.currentPlayer);
             this.changeCurrentPlayer();
             if (this.currentPlayer.equals(this.player1)) {
                 this.asks();
             }
         } while (!won);
-        
-        //System.out.println(this.rules());
 
+        if (this.currentPlayer.equals(this.player1)) {
+            boolean won2 = this.aligned(this.player2);
+            if (won2) {
+                this.end(this.player1, this.player2);
+            }
+            else {
+                this.end(this.player1);
+            }
+        }
+        else {
+            boolean won2 = this.aligned(this.player1);
+            if (won2) {
+                this.end(this.player1, this.player2);
+            }
+            else {
+                this.end(this.player2);
+            }
+        }
     }
 
     /**
@@ -162,6 +180,9 @@ public class Game implements Serializable {
      */
 
     public void initializeGrid() {
+
+        System.out.println("\n\n====================[ " + this.player1.getName() + " you have the X pawns ]====================");
+        System.out.println("====================[ " + this.player2.getName() + " you have the O pawns ]====================");
 
         this.grid = new Square[size][size];
 
@@ -256,29 +277,6 @@ public class Game implements Serializable {
         return aligned;
 
     }
-
-    /**
-     * Get the black pawns list
-     * @return the list of black pawns as an ArrayList
-     */
-
-    public ArrayList<Pawn> getBlackPawns() {
-
-        return this.blackPawns;
-    }
-
-    /**
-     * Get the white pawns list
-     * @return the list of white pawns as an ArrayList
-     */
-
-    public ArrayList<Pawn> getWhitePawns() {
-        
-        return this.whitePawns;
-
-    }
-
-
 
     /**
      * Get the current player
@@ -617,7 +615,7 @@ public class Game implements Serializable {
                 coordinates = this.readMove(this.currentPlayer);
                 possible = movePossible(pawn, coordinates);
                 if (!possible) {
-                    System.out.println("\n#############################################################################################\n#The pawn you want to move or the coordinates you have chosen are wrong, please choose again#\n#############################################################################################\n");
+                    System.out.println("\n####################################################################\n#You can't move this pawn at these coordinates, please choose again#\n####################################################################\n");
                 }
             } while (!possible);
 
@@ -640,10 +638,6 @@ public class Game implements Serializable {
                     good = true;
                 }
                 i++;
-            }
-
-            for (Pawn p : this.getOpponentPawns()) {
-                System.out.println(p.getX() + " " + p.getY());
             }
 
             this.displayGrid();
@@ -747,8 +741,18 @@ public class Game implements Serializable {
 
     public void end(Player player) {
 
-        JFrame frame = new JFrame();
-        JOptionPane.showMessageDialog(frame, "Both of you fought well but at the end a winner has to be chosen !\nPlease give a warm applause to " + player.getName() + " for his win !\nHe will now have his name written in the Hall of Fame !");
+        System.out.println("\n\n=================================================================================================================================================================================================");
+        System.out.println("Both of you fought well but at the end a winner has to be chosen ! Please give a warm applause to " + player.getName() + " for his win ! He will now have his name written in the Hall of Fame !");
+        System.out.println("=================================================================================================================================================================================================\n\n");    
+        System.exit(0);
+
+    }
+
+    public void end(Player player1, Player player2) {
+
+        System.out.println("\n\n===================================================================================================================================================================================================================");
+        System.out.println("You both have been amazing players and no one has been better than the other. So that's an equality ! Please give a warm applause to " + player1.getName() + " and " + player2.getName() + " for their incredible game !");
+        System.out.println("====================================================================================================================================================================================================================\n\n");    
         System.exit(0);
 
     }

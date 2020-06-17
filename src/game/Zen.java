@@ -35,7 +35,7 @@ public class Zen {
 
             if (save) {  
                 do {
-                    System.out.println("Write the name of the file containing the game you wanna load :");
+                    System.out.println("\n\n=======================[ Name of the file to load ]=======================");
                     gameFile = "../data/" + SC.nextLine();
                 }  while (gameFile == null && SC.hasNextLine());
                 this.game = LoadGame.loadGame(gameFile);
@@ -55,7 +55,7 @@ public class Zen {
         String saved = "";
         
         do {
-            System.out.println("\n\nNew game or saved game ?\n* 'Yes' to launch a saved game\n* 'No' to start a new game");
+            System.out.println("\n\n=======================[ New game or saved game ? ]=======================\n* 'Yes' to launch a saved game\t\t* 'No' to start a new game");
             saved = SC.nextLine();
         } while (!saved.equalsIgnoreCase("YES") && !saved.equalsIgnoreCase("NO"));    
 
@@ -106,7 +106,7 @@ public class Zen {
         String mode = "";
         
         do {
-            System.out.println("\n\nMode of the game\n* 'HH' for a multiplayer game\n* 'HA' for a game against a bot");
+            System.out.println("\n\n=========================[ Mode of the game ? ]===========================\n* 'HH' for a multiplayer game\t\t* 'HA' for a game against a bot");
             mode = SC.nextLine();
         } while (!mode.equalsIgnoreCase("HH") && !mode.equalsIgnoreCase("HA") && SC.hasNextLine());
 
