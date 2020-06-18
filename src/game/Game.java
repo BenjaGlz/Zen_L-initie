@@ -90,8 +90,10 @@ public class Game implements Serializable {
         
         this.initializeGrid();
         this.displayGrid();
+        System.out.println(this.rules());
 
         do {
+            System.out.println("====================[ It's your turn to play " +this.currentPlayer.getName()+ " ]====================\n");
             boolean zen = false;
             for (Pawn p : this.getCurrentPawns()) {
                 if (p.getType().equals(PawnType.ZEN)) {
@@ -118,20 +120,26 @@ public class Game implements Serializable {
         } while (!won);
 
         if (this.currentPlayer.equals(this.player1)) {
+            System.out.println("test1");
             boolean won2 = this.aligned(this.player2);
             if (won2) {
+                System.out.println("test2");
                 this.end(this.player1, this.player2);
             }
             else {
+                System.out.println("test3");
                 this.end(this.player1);
             }
         }
         else {
+            System.out.println("test4");
             boolean won2 = this.aligned(this.player1);
             if (won2) {
+                System.out.println("test5");
                 this.end(this.player1, this.player2);
             }
             else {
+                System.out.println("test6");
                 this.end(this.player2);
             }
         }
@@ -417,171 +425,404 @@ public class Game implements Serializable {
             }
             else {
                 if (pawn.getX() == coordinates[0] && pawn.getY() < coordinates[1]) {
-                    for (int i = pawn.getY()+1; i <= coordinates[1]; i++) {
-                        if (!this.grid[i][coordinates[0]].isFree()) {
-                            for (Pawn p : this.getCurrentPawns()) {
-                                if (p.contains(coordinates[0], i) && i == size -1) {
-                                    possible = false;
+                    int y = 0;
+                    for (Pawn p : this.getCurrentPawns()) {
+                        if (p.getX() == pawn.getX()) {
+                            y++;
+                        }
+                    }
+                    for (Pawn p : this.getOpponentPawns()) {
+                        if (p.getX() == pawn.getX()) {
+                            y++;
+                        }
+                    }
+                    if (y < coordinates[1] - pawn.getY()) {
+                        possible = false;
+                    }
+                    if (possible) {
+                        for (int i = pawn.getY()+1; i <= coordinates[1]; i++) {
+                            if (!this.grid[i][coordinates[0]].isFree()) {
+                                for (Pawn p : this.getCurrentPawns()) {
+                                    if (p.contains(coordinates[0], i) && i == size -1) {
+                                        possible = false;
+                                    }
+                                    if (p.contains(coordinates[0], coordinates[1])) {
+                                        possible = false;
+                                    }
                                 }
-                                if (p.contains(coordinates[0], coordinates[1])) {
-                                    possible = false;
+                                for (Pawn p : this.getOpponentPawns()) {
+                                    if (p.contains(coordinates[0], i) && i < coordinates[1]) {
+                                        possible = false;
+                                    }
                                 }
-                            }
-                            for (Pawn p : this.getOpponentPawns()) {
-                                if (p.contains(coordinates[0], i) && i < coordinates[1]) {
-                                    possible = false;
-                                }
-                            }
+                            } 
                         } 
-                    } 
+                    }
                 }
                 else if (pawn.getX() == coordinates[0] && pawn.getY() > coordinates[1]) {
-                    for (int i = pawn.getY()-1; i >= coordinates[1]; i--) {
-                        if (!this.grid[i][coordinates[0]].isFree()) {
-                            for (Pawn p : this.getCurrentPawns()) {
-                                if (p.contains(coordinates[0], i) && i == 1) {
-                                    possible = false;
+                    int y = 0;
+                    for (Pawn p : this.getCurrentPawns()) {
+                        if (p.getX() == pawn.getX()) {
+                            y++;
+                        }
+                    }
+                    for (Pawn p : this.getOpponentPawns()) {
+                        if (p.getX() == pawn.getX()) {
+                            y++;
+                        }
+                    }
+                    if (y < pawn.getY() - coordinates[1]) {
+                        possible = false;
+                    }
+                    if (possible) {
+                        for (int i = pawn.getY()-1; i >= coordinates[1]; i--) {
+                            if (!this.grid[i][coordinates[0]].isFree()) {
+                                for (Pawn p : this.getCurrentPawns()) {
+                                    if (p.contains(coordinates[0], i) && i == 0) {
+                                        possible = false;
+                                    }
+                                    if (p.contains(coordinates[0], coordinates[1])) {
+                                        possible = false;
+                                    }
                                 }
-                                if (p.contains(coordinates[0], coordinates[1])) {
-                                    possible = false;
+                                for (Pawn p : this.getOpponentPawns()) {
+                                    if (p.contains(coordinates[0], i) && i > coordinates[1]) {
+                                        possible = false;
+                                    }
                                 }
-                            }
-                            for (Pawn p : this.getOpponentPawns()) {
-                                if (p.contains(coordinates[0], i) && i > coordinates[1]) {
-                                    possible = false;
-                                }
-                            }
-                        } 
+                            } 
+                        }
                     } 
                 }
                 else if (pawn.getY() == coordinates[1] && pawn.getX() < coordinates[0]) {
-                    for (int i = pawn.getX()+1; i <= coordinates[0]; i++) {
-                        if (!this.grid[coordinates[1]][i].isFree()) {
-                            for (Pawn p : this.getCurrentPawns()) {
-                                if (p.contains(i, coordinates[1]) && i == size -1) {
-                                    possible = false;
+                    int y = 0;
+                    for (Pawn p : this.getCurrentPawns()) {
+                        if (p.getY() == pawn.getY()) {
+                            y++;
+                        }
+                    }
+                    for (Pawn p : this.getOpponentPawns()) {
+                        if (p.getY() == pawn.getY()) {
+                            y++;
+                        }
+                    }
+                    if (y < coordinates[0] - pawn.getX()) {
+                        possible = false;
+                    }
+                    if (possible) {
+                        for (int i = pawn.getX()+1; i <= coordinates[0]; i++) {
+                            if (!this.grid[coordinates[1]][i].isFree()) {
+                                for (Pawn p : this.getCurrentPawns()) {
+                                    if (p.contains(i, coordinates[1]) && i == size -1) {
+                                        possible = false;
+                                    }
+                                    if (p.contains(coordinates[0], coordinates[1])) {
+                                        possible = false;
+                                    }
                                 }
-                                if (p.contains(coordinates[0], coordinates[1])) {
-                                    possible = false;
+                                 for (Pawn p : this.getOpponentPawns()) {
+                                    if (p.contains(i, coordinates[1]) && i < coordinates[0]) {
+                                        possible = false;
+                                    }
                                 }
-                            }
-                             for (Pawn p : this.getOpponentPawns()) {
-                                if (p.contains(i, coordinates[1]) && i < coordinates[0]) {
-                                    possible = false;
-                                }
-                            }
+                            } 
                         } 
-                    } 
+                    }
                 }
                 else if (pawn.getY() == coordinates[1] && pawn.getX() > coordinates[0]) {
-                    for (int i = pawn.getX()-1; i >= coordinates[0]; i--) {
-                        if (!this.grid[coordinates[1]][i].isFree()) {
-                            for (Pawn p : this.getCurrentPawns()) {
-                                if (p.contains(i, coordinates[1]) && i == 1) {
-                                    possible = false;
+                    int y = 0;
+                    for (Pawn p : this.getCurrentPawns()) {
+                        if (p.getY() == pawn.getY()) {
+                            y++;
+                        }
+                    }
+                    for (Pawn p : this.getOpponentPawns()) {
+                        if (p.getY() == pawn.getY()) {
+                            y++;
+                        }
+                    }
+                    if (y < pawn.getX() - coordinates[0]) {
+                        possible = false;
+                    }
+                    if (possible) {
+                        for (int i = pawn.getX()-1; i >= coordinates[0]; i--) {
+                            if (!this.grid[coordinates[1]][i].isFree()) {
+                                for (Pawn p : this.getCurrentPawns()) {
+                                    if (p.contains(i, coordinates[1]) && i == 0) {
+                                        possible = false;
+                                    }
+                                    if (p.contains(coordinates[0], coordinates[1])) {
+                                        possible = false;
+                                    }
                                 }
-                                if (p.contains(coordinates[0], coordinates[1])) {
-                                    possible = false;
+                                for (Pawn p : this.getOpponentPawns()) {
+                                    if (p.contains(i, coordinates[1]) && i > coordinates[0]) {
+                                        possible = false;
+                                    }
+                                }
+                            } 
+                        } 
+                    }
+                }
+                else if ((coordinates[1]-pawn.getY() == coordinates[0]-pawn.getX()) && (coordinates[1] > pawn.getY()) && (coordinates[0] > pawn.getX())) {
+                    int i = 0;
+                    int j = 0;
+                    int k = 0;
+                    if (pawn.getX() > pawn.getY()) {
+                        i = pawn.getY()-pawn.getX();
+                        while (i < size) {
+                            for (Pawn p : this.getCurrentPawns()) {
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
                                 }
                             }
                             for (Pawn p : this.getOpponentPawns()) {
-                                if (p.contains(i, coordinates[1]) && i > coordinates[0]) {
-                                    possible = false;
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
                                 }
                             }
+                            i++;
+                            j++;
+                        }
+                    }
+                    else {
+                        j = pawn.getX()-pawn.getY();
+                        while (j < size) {
+                            for (Pawn p : this.getCurrentPawns()) {
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
+                                }
+                            }
+                            for (Pawn p : this.getOpponentPawns()) {
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
+                                }
+                            }
+                            i++;
+                            j++;
+                        }
+                    }
+                    if (k < coordinates[1] - pawn.getY()) {
+                        possible = false;
+                    }
+                    if (possible) {
+                        int x = pawn.getX() +1;
+                        int y = pawn.getY() +1;
+                        while (x <= coordinates[0] || y <= coordinates[1]) {
+                            if (!this.grid[y][x].isFree()) {
+                                for (Pawn p : this.getCurrentPawns()) {
+                                    if (p.contains(x, y) && (x == size -1 || y == size -1)) {
+                                        possible = false; 
+                                    }
+                                    if (p.contains(coordinates[0], coordinates[1])) {
+                                        possible = false;
+                                    } 
+                                }
+                                for (Pawn p : this.getOpponentPawns()) {
+                                    if (p.contains(x, y) && x < coordinates[0] && y < coordinates[1]) {
+                                        possible = false;
+                                    }
+                                }
+                            }
+                            x++;
+                            y++;
                         } 
                     } 
                 }
-                else if ((coordinates[1]-pawn.getY() == coordinates[0]-pawn.getX()) && (coordinates[1] > pawn.getY()) && (coordinates[0] > pawn.getX())) {
-                    int x = pawn.getX() +1;
-                    int y = pawn.getY() +1;
-                    while (x <= coordinates[0] || y <= coordinates[1]) {
-                        if (!this.grid[y][x].isFree()) {
-                            for (Pawn p : this.getCurrentPawns()) {
-                                if (p.contains(x, y) && (x == size -1 || y == size -1)) {
-                                    possible = false; 
-                                }
-                                if (p.contains(coordinates[0], coordinates[1])) {
-                                    possible = false;
-                                } 
-                            }
-                            for (Pawn p : this.getOpponentPawns()) {
-                                if (p.contains(x, y) && x < coordinates[0] && y < coordinates[1]) {
-                                    possible = false;
-                                }
-                            }
-                        }
-                        x++;
-                        y++;
-                    }  
-                }
                 else if ((Math.abs(coordinates[1]-pawn.getY()) == coordinates[0]-pawn.getX()) && (coordinates[1] < pawn.getY()) && (coordinates[0] > pawn.getX())) {
-                    int x = pawn.getX() +1;
-                    int y = pawn.getY() -1;
-                    while (x <= coordinates[0] || y >= coordinates[1]) {
-                        if (!this.grid[y][x].isFree()) {
+                    int i = 0;
+                    int j = 0;
+                    int k = 0;
+                    if (pawn.getX() > pawn.getY()) {
+                        System.out.println("test");
+                        i = pawn.getX() + pawn.getY();
+                        while (i >= 0) {
                             for (Pawn p : this.getCurrentPawns()) {
-                                if (p.contains(x, y) && (x == size -1 || y == 1)) {
-                                    possible = false; 
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
                                 }
-                                if (p.contains(coordinates[0], coordinates[1])) {
-                                    possible = false;
-                                } 
                             }
                             for (Pawn p : this.getOpponentPawns()) {
-                                if (p.contains(x, y) && x < coordinates[0] && y > coordinates[1]) {
-                                    possible = false;
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
                                 }
                             }
+                            i--;
+                            j++;
                         }
-                        x++;
-                        y--;
-                    }  
+                    }
+                    else {
+                        j = pawn.getX() + pawn.getY();
+                        while (j >= 0) {
+                            for (Pawn p : this.getCurrentPawns()) {
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
+                                }
+                            }
+                            for (Pawn p : this.getOpponentPawns()) {
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
+                                }
+                            }
+                            i++;
+                            j--;
+                        }
+                    }
+                    if (k < pawn.getY() - coordinates[1]) {
+                        possible = false;
+                    }
+                    if (possible) {
+                        int x = pawn.getX() +1;
+                        int y = pawn.getY() -1;
+                        while (x <= coordinates[0] || y >= coordinates[1]) {
+                            if (!this.grid[y][x].isFree()) {
+                                for (Pawn p : this.getCurrentPawns()) {
+                                    if (p.contains(x, y) && (x == size -1 || y == 0)) {
+                                        possible = false; 
+                                    }
+                                    if (p.contains(coordinates[0], coordinates[1])) {
+                                        possible = false;
+                                    } 
+                                }
+                                for (Pawn p : this.getOpponentPawns()) {
+                                    if (p.contains(x, y) && x < coordinates[0] && y > coordinates[1]) {
+                                        possible = false;
+                                    }
+                                }
+                            }
+                            x++;
+                            y--;
+                        }  
+                    }
                 }
                 else if ((coordinates[1]-pawn.getY() == Math.abs(coordinates[0]-pawn.getX())) && (coordinates[1] > pawn.getY()) && (coordinates[0] < pawn.getX())) {
-                    int x = pawn.getX() -1;
-                    int y = pawn.getY() +1;
-                    while (x >= coordinates[0] || y <= coordinates[1]) {
-                        if (!this.grid[y][x].isFree()) {
+                    int i = 0;
+                    int j = 0;
+                    int k = 0;
+                    if (pawn.getX() > pawn.getY()) {
+                        i = pawn.getX() + pawn.getY();
+                        while (i >= 0) {
                             for (Pawn p : this.getCurrentPawns()) {
-                                if (p.contains(x, y) && (x == 1 || y == size -1)) {
-                                    possible = false; 
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
                                 }
-                                if (p.contains(coordinates[0], coordinates[1])) {
-                                    possible = false;
-                                } 
                             }
                             for (Pawn p : this.getOpponentPawns()) {
-                                if (p.contains(x, y) && x > coordinates[0] && y < coordinates[1]) {
-                                    possible = false;
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
                                 }
                             }
+                            i--;
+                            j++;
                         }
-                        x--;
-                        y++;
+                    }
+                    else {
+                        j = pawn.getX() + pawn.getY();
+                        while (j >= 0) {
+                            for (Pawn p : this.getCurrentPawns()) {
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
+                                }
+                            }
+                            for (Pawn p : this.getOpponentPawns()) {
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
+                                }
+                            }
+                            i++;
+                            j--;
+                        }
+                    }
+                    if (k < coordinates[1] - pawn.getY()) {
+                        possible = false;
+                    }
+                    if (possible) {
+                        int x = pawn.getX() -1;
+                        int y = pawn.getY() +1;
+                        while (x >= coordinates[0] || y <= coordinates[1]) {
+                            if (!this.grid[y][x].isFree()) {
+                                for (Pawn p : this.getCurrentPawns()) {
+                                    if (p.contains(x, y) && (x == 0 || y == size -1)) {
+                                        possible = false; 
+                                    }
+                                    if (p.contains(coordinates[0], coordinates[1])) {
+                                        possible = false;
+                                    } 
+                                }
+                                for (Pawn p : this.getOpponentPawns()) {
+                                    if (p.contains(x, y) && x > coordinates[0] && y < coordinates[1]) {
+                                        possible = false;
+                                    }
+                                }
+                            }
+                            x--;
+                            y++;
+                        }
                     }    
                 }
                 else if ((coordinates[1]-pawn.getY() == coordinates[0]-pawn.getX()) && (coordinates[1] < pawn.getY()) && (coordinates[0] < pawn.getX())) {
-                    int x = pawn.getX() -1;
-                    int y = pawn.getY() -1;
-                    while (x >= coordinates[0] || y >= coordinates[1]) {
-                        if (!this.grid[y][x].isFree()) {
+                    int i = 0;
+                    int j = 0;
+                    int k = 0;
+                    if (pawn.getX() > pawn.getY()) {
+                        i = pawn.getX()-pawn.getY();
+                        while (i < size) {
                             for (Pawn p : this.getCurrentPawns()) {
-                                if (p.contains(x, y) && (x == 1 || y == 1)) {
-                                    possible = false; 
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
                                 }
-                                if (p.contains(coordinates[0], coordinates[1])) {
-                                    possible = false;
-                                } 
                             }
                             for (Pawn p : this.getOpponentPawns()) {
-                                if (p.contains(x, y) && x > coordinates[0] && y > coordinates[1]) {
-                                    possible = false;
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
                                 }
                             }
+                            i++;
+                            j++;
                         }
-                        x--;
-                        y--;
+                    }
+                    else {
+                        j = pawn.getY()-pawn.getX();
+                        while (j < size) {
+                            for (Pawn p : this.getCurrentPawns()) {
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
+                                }
+                            }
+                            for (Pawn p : this.getOpponentPawns()) {
+                                if (p.getY() == j && p.getX() == i) {
+                                    k++;
+                                }
+                            }
+                            i++;
+                            j++;
+                        }
+                    }
+                    if (k < pawn.getY() - coordinates[1]) {
+                        possible = false;
+                    }
+                    if (possible) {
+                        int x = pawn.getX() -1;
+                        int y = pawn.getY() -1;
+                        while (x >= coordinates[0] || y >= coordinates[1]) {
+                            if (!this.grid[y][x].isFree()) {
+                                for (Pawn p : this.getCurrentPawns()) {
+                                    if (p.contains(x, y) && (x == 0 || y == 0)) {
+                                        possible = false; 
+                                    }
+                                    if (p.contains(coordinates[0], coordinates[1])) {
+                                        possible = false;
+                                    } 
+                                }
+                                for (Pawn p : this.getOpponentPawns()) {
+                                    if (p.contains(x, y) && x > coordinates[0] && y > coordinates[1]) {
+                                        possible = false;
+                                    }
+                                }
+                            }
+                            x--;
+                            y--;
+                        }
                     }
                 }
                 else {
@@ -611,6 +852,7 @@ public class Game implements Serializable {
         }
         if (pawn != null && coordinates[0] >= 0 && coordinates[0] < size && coordinates[1] >= 0 && coordinates[1] < size) {
             do {
+                this.displayGrid();
                 pawn = this.readPawn(this.currentPlayer);
                 coordinates = this.readMove(this.currentPlayer);
                 possible = movePossible(pawn, coordinates);
@@ -712,24 +954,24 @@ public class Game implements Serializable {
 
     public void asks() {
 
-        int x = 0;
+        String x = "";
         String filename = "";
 
         do {
-            System.out.println("What do you want to do ?\n*'1' to continue\n*'2' to see the rules\n*'3' to save and quit the game\n*'4' to quit the game");
-            x = SC.nextInt();
-        } while (x != 1 && x != 2 && x != 3 && x != 4);
+            System.out.println("What do you want to do ?\n*'C' to Continue\n*'R' to see the Rules\n*'S' to Save and quit the game\n*'Q' to Quit the game");
+            x = SC.next();
+        } while (!x.equalsIgnoreCase("c") && !x.equalsIgnoreCase("r") && !x.equalsIgnoreCase("s") && !x.equalsIgnoreCase("q"));
 
-        if (x == 2) {
+        if (x.equalsIgnoreCase("r")) {
             System.out.println(this.rules());
         }
-        else if (x == 3) {
+        else if (x.equalsIgnoreCase("s")) {
             System.out.println("Write the name of the file you want to save the game in");
             filename = "../data/" + SC.next();
             SaveGame.saveGame(this, filename);
             System.exit(0);
         }
-        else if (x == 4) {
+        else if (x.equalsIgnoreCase("q")) {
             System.exit(0);
         }
     }
@@ -741,20 +983,19 @@ public class Game implements Serializable {
 
     public void end(Player player) {
 
-        System.out.println("\n\n=================================================================================================================================================================================================");
-        System.out.println("Both of you fought well but at the end a winner has to be chosen ! Please give a warm applause to " + player.getName() + " for his win ! He will now have his name written in the Hall of Fame !");
-        System.out.println("=================================================================================================================================================================================================\n\n");    
+        System.out.println("\n\n========================================================================================================================================");
+        System.out.println("Both of you fought well but at the end a winner has to be chosen ! Please give a warm applause to " + player.getName() + " for his win !\nHe will now have his name written in the Hall of Fame !");
+        System.out.println("========================================================================================================================================\n\n");    
         System.exit(0);
 
     }
 
     public void end(Player player1, Player player2) {
 
-        System.out.println("\n\n===================================================================================================================================================================================================================");
-        System.out.println("You both have been amazing players and no one has been better than the other. So that's an equality ! Please give a warm applause to " + player1.getName() + " and " + player2.getName() + " for their incredible game !");
-        System.out.println("====================================================================================================================================================================================================================\n\n");    
+        System.out.println("\n\n=====================================================================================================");
+        System.out.println("You both have been amazing players and no one has been better than the other. So that's an equality !\nPlease give a warm applause to " + player1.getName() + " and " + player2.getName() + " for their incredible game !");
+        System.out.println("=====================================================================================================\n\n");    
         System.exit(0);
 
     }
-
 }

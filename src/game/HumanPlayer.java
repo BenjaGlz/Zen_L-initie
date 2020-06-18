@@ -66,10 +66,6 @@ public class HumanPlayer extends Player {
         ZenType type = ZenType.FRIEND;
         String pawn = "";
 
-        System.out.println("====================[ It's your turn to play " +this.getName()+ " ]====================\n");
-
-        
-
         do {
             System.out.println("\nWrite 'friend' if you want to use the Zen pawn as a team member, 'opponent' otherwise");
             pawn = SC.next();
