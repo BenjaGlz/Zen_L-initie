@@ -41,6 +41,8 @@ public class SquareTest {
         Square s = new Square(5,4);
         s.setBusy();
         assertFalse(s.isFree());
+        s.setFree();
+        assertTrue(s.isFree());
     }
 
 }

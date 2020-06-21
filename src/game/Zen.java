@@ -34,6 +34,7 @@ public class Zen {
             String gameFile = "";
 
             if (save) {  
+                //Launch an existing game saved
                 do {
                     System.out.println("\n\n=======================[ Name of the file to load ]=======================");
                     gameFile = "../data/" + SC.nextLine();
@@ -42,6 +43,7 @@ public class Zen {
                 this.game.start();
             }
             else {  
+                //launch a very new game
                 this.configure();
                 this.game = new Game(this.blackPawns, this.whitePawns, name1, name2, this.mode);
                 this.game.start();
@@ -76,6 +78,7 @@ public class Zen {
         blackPawns = new ArrayList<Pawn>();
         whitePawns = new ArrayList<Pawn>();
 
+        //initialize the 2 arrayLists with the pawns
         this.blackPawns.add(new Pawn(0, 0, PawnType.BLACK));
         this.blackPawns.add(new Pawn(4, 1, PawnType.BLACK));
         this.blackPawns.add(new Pawn(6, 1, PawnType.BLACK));

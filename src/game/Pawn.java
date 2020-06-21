@@ -140,7 +140,7 @@ public class Pawn implements Serializable{
     }
 
     /**
-     * check weither the case with x and y coordinates belongs to the ship or not
+     * check weither the case with x and y coordinates belongs to the pawn or not
      * @param x : x coordinate of the square checked
      * @param y : y coordinate of the square checked
      * @return true if so
@@ -164,24 +164,5 @@ public class Pawn implements Serializable{
 
         return contains;
 
-    }
-
-    public String toString() {
-
-        String string = this.getX() + " " + this.getY();
-
-        if (this.getType().equals(PawnType.BLACK)) {
-            string += " black";
-        }
-        else if (this.getType().equals(PawnType.WHITE)) {
-            string += " white";
-        }
-        else if (this.getType().equals(PawnType.ZEN)) {
-            string += " zen";
-        }
-
-        return string;
-    }
-
-    
+    }    
 }

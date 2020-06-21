@@ -2,7 +2,7 @@ package game;
 import java.util.*;
 
 /**
- * Define all what a human player do
+ * Define all what an auto player do
  * @author B.Guillouzo
  */
 
@@ -17,6 +17,7 @@ public class AutoPlayer extends Player {
     public AutoPlayer(String name, ArrayList<Pawn> pawns) {
 
         super(name, pawns);
+        this.isHuman = false;
 
     }
 

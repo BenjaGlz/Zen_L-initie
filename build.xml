@@ -50,9 +50,8 @@
             <test name="test.HumanPlayerTest" />
             <test name="test.GameTest" />
             <test name="test.PawnTest" />
-            <test name="test.SaveAndLoadTest" />
             <test name="test.SquareTest" />
-            <test name="test.ZenTest" />
+            <test name="test.SaveAndLoadGameTest" />
         </junit>
         <junitreport todir="reportTest">
             <fileset dir="." includes="TEST-*.xml"/>

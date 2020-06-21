@@ -47,15 +47,17 @@ public class PawnTest {
         assertEquals(8, p.getX());
         p.setX(0);
         assertEquals(0, p.getX());
-        p.setX(11);
-        assertEquals(11, p.getX());
+        p.setX(10);
+        assertEquals(10, p.getX());
 
         p.setY(8);
         assertEquals(8, p.getY());
         p.setY(0);
         assertEquals(0, p.getY());
-        p.setY(11);
-        assertEquals(11, p.getY());
+        System.out.println(p.getY());
+        p.setY(10);
+        assertEquals(10, p.getY());
+        System.out.println(p.getY());
 
         p.setType(PawnType.BLACK);
         assertSame(PawnType.BLACK, p.getType());
@@ -69,6 +71,13 @@ public class PawnTest {
         assertTrue(p.isZen());
         p.setType(PawnType.WHITE);
         assertFalse(p.isZen());
+    }
+
+    @Test() 
+    public void testContains() {
+        p = new Pawn(5, 4, PawnType.WHITE);
+        assertTrue(p.contains(5, 4));
+        assertFalse(p.contains(7,3));
     }
 
 }

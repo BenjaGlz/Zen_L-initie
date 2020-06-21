@@ -25,9 +25,13 @@ public class SaveGame {
             data.close();
 
         } catch (FileNotFoundException f) {
-            System.out.println("saveGame : Error - File not found") ;
-        } catch (IOException i) {
-            System.out.println("read : Error - input/output exception");
+            System.out.println("saveGame : Error - file not found") ;
+        } catch (InvalidClassException i){
+            System.out.println("saveGame : Error - invalid class");
+        } catch (NotSerializableException n){
+            System.out.println("saveGame : Error - some classes are not serializable");
+        } catch (Exception e) {
+            System.out.println("saveGame : Error - object problem");
         } 
 
     }

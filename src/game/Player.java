@@ -14,6 +14,7 @@ public abstract class Player implements Serializable {
     protected ArrayList<Pawn> pawns;
     protected static final int size = 11;
     protected static final Scanner SC = new Scanner(System.in);
+    protected boolean isHuman;
 
     /**
      * Constructor of the Player class
@@ -32,6 +33,7 @@ public abstract class Player implements Serializable {
         if (name != null && pawns != null) {
             this.name = name;
             this.pawns = pawns;
+            this.isHuman = true;
         }
 
     }
@@ -67,11 +69,14 @@ public abstract class Player implements Serializable {
     public abstract int[] newMove();
 
     /**
-     * Find the pawn which this.contains these coordinates
-     * @param x : x coordinate of the square checked
-     * @param y : y coordinate of the square checked
-     * @return the pawn which has the x and y coordinates
+     * Look for the state of the player
+     * @return true if the player is a human, false otherwise
      */
+
+    public boolean getHuman() {
+
+        return this.isHuman;
+    }
 
     /**
      * Find the pawn which contains these coordinates
@@ -117,6 +122,7 @@ public abstract class Player implements Serializable {
         stack.add(this.pawns.get(0));
         tagged[0] = true;
 
+        //bfs algorithm
         while (!stack.isEmpty()) {
             Pawn x = stack.get(stack.size()-1);
             stack.remove(stack.size()-1);
@@ -155,39 +161,39 @@ public abstract class Player implements Serializable {
 
     public Pawn nextPawn(Pawn pawn, boolean[] tagged) {
 
-        Pawn son = null;
+        Pawn p = null;
         int x = pawn.getX();
         int y = pawn.getY();
 
         if (y > 0 && this.pawns.indexOf(this.contains(x, y-1))!=-1 && !tagged[this.pawns.indexOf(this.contains(x, y-1))]) {
-            son = this.contains(x, y-1);
+            p = this.contains(x, y-1);
         }
         else if (y < size-1 && this.pawns.indexOf(this.contains(x, y+1))!=-1 && !tagged[this.pawns.indexOf(this.contains(x, y+1))]) {
-            son = this.contains(x, y+1);
+            p = this.contains(x, y+1);
         }
-        else if (x>0 && this.pawns.indexOf(this.contains(x-1, y))!=-1 && !tagged[this.pawns.indexOf(this.contains(x-1, y))]) {
-            son = this.contains(x-1, y);
+        else if (x > 0 && this.pawns.indexOf(this.contains(x-1, y))!=-1 && !tagged[this.pawns.indexOf(this.contains(x-1, y))]) {
+            p = this.contains(x-1, y);
         }
-        else if (x<size-1 && this.pawns.indexOf(this.contains(x+1, y))!=-1 && !tagged[this.pawns.indexOf(this.contains(x+1, y))]) {
-            son = this.contains(x+1, y);
+        else if (x < size -1 && this.pawns.indexOf(this.contains(x+1, y))!=-1 && !tagged[this.pawns.indexOf(this.contains(x+1, y))]) {
+            p = this.contains(x+1, y);
         }
-        else if (x<size-1 && this.pawns.indexOf(this.contains(x+1, y))!=-1 && !tagged[this.pawns.indexOf(this.contains(x+1, y))]) {
-            son = this.contains(x+1, y);
+        else if (x < size -1 && this.pawns.indexOf(this.contains(x+1, y))!=-1 && !tagged[this.pawns.indexOf(this.contains(x+1, y))]) {
+            p = this.contains(x+1, y);
         }
-        else if ((y>0 && x>0) && this.pawns.indexOf(this.contains(x-1, y-1))!=-1  && !tagged[this.pawns.indexOf(this.contains(x-1, y-1))]) {
-            son = this.contains(x-1, y-1);
+        else if ((y > 0 && x > 0) && this.pawns.indexOf(this.contains(x-1, y-1))!=-1  && !tagged[this.pawns.indexOf(this.contains(x-1, y-1))]) {
+            p = this.contains(x-1, y-1);
         }
-        else if ((y>0 && x<size-1) && this.pawns.indexOf(this.contains(x+1, y-1))!=-1 && !tagged[this.pawns.indexOf(this.contains(x+1, y-1))]) {
-            son = this.contains(x+1, y-1);
+        else if ((y > 0 && x < size -1) && this.pawns.indexOf(this.contains(x+1, y-1))!=-1 && !tagged[this.pawns.indexOf(this.contains(x+1, y-1))]) {
+            p = this.contains(x+1, y-1);
         }
-        else if ((y<size-1 && x<size-1) && this.pawns.indexOf(this.contains(x+1, y+1))!=-1 && !tagged[this.pawns.indexOf(this.contains(x+1, y+1))]) {
-            son = this.contains(x+1, y+1);
+        else if ((y < size -1 && x < size -1) && this.pawns.indexOf(this.contains(x+1, y+1))!=-1 && !tagged[this.pawns.indexOf(this.contains(x+1, y+1))]) {
+            p = this.contains(x+1, y+1);
         }
         else if ((y<size-1 && x>0) && this.pawns.indexOf(this.contains(x-1, y+1))!=-1 && !tagged[this.pawns.indexOf(this.contains(x-1, y+1))]) {
-            son = this.contains(x-1, y+1);
+            p = this.contains(x-1, y+1);
         }
 
-        return son;
+        return p;
     }
 }
 

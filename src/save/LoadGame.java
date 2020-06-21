@@ -27,11 +27,13 @@ public class LoadGame {
 
         } catch (FileNotFoundException f) {
             System.out.println("loadGame : Error - file not found") ;
-        } catch (IOException i) {
-            System.out.println("read : Error - input/output exception");
+        } catch (InvalidClassException i){
+            System.out.println("loadGame : Error - invalid class");
+        } catch (NotSerializableException n){
+            System.out.println("loadGame : Error - some classes are not serializable");
         } catch (Exception e) {
             System.out.println("loadGame : Error - object problem");
-        }
+        } 
 
         return g;
 

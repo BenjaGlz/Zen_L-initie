@@ -1,5 +1,6 @@
 import game.*;
 import java.util.Scanner;
+import java.io.IOException;
 
 /**
  * Launches the whole game of Zen
@@ -11,6 +12,8 @@ import java.util.Scanner;
    private static final Scanner SC = new Scanner(System.in);
 
    public static void main(String[] args) { 
+
+      Game.clear();
 
       System.out.println("\n\n   ▄▄▄▄▄▄   ▄███▄      ▄       █    ▄█    ▄   ▄█    ▄▄▄▄▀ ▄█ ▄███▄\n  ▀   ▄▄▀   █▀   ▀      █      █    ██     █  ██ ▀▀▀ █    ██ █▀   ▀  \n   ▄▀▀   ▄▀ ██▄▄    ██   █     █    ██ ██   █ ██     █    ██ ██▄▄    \n   ▀▀▀▀▀▀   █▄   ▄▀ █ █  █     ███▄ ▐█ █ █  █ ▐█    █     ▐█ █▄   ▄▀ \n            ▀███▀   █  █ █         ▀ ▐ █  █ █  ▐   ▀       ▐ ▀███▀   \n                    █   ██             █   ██\n\n                        ");
 

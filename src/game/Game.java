@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.Serializable;
 import java.io.FileNotFoundException;
 import save.SaveGame;
+import java.io.IOException;
 
 /**
  * Class wich describes all the actions of the game
@@ -92,17 +93,19 @@ public class Game implements Serializable {
         this.displayGrid();
         System.out.println(this.rules());
 
+        //boucle de jeu
         do {
-            System.out.println("====================[ It's your turn to play " +this.currentPlayer.getName()+ " ]====================\n");
+            System.out.println("\n\n====================[ It's your turn to play " +this.currentPlayer.getName()+ " ]====================\n");
+            //check if the zen pawn is still in the game
             boolean zen = false;
             for (Pawn p : this.getCurrentPawns()) {
-                if (p.getType().equals(PawnType.ZEN)) {
+                if (p.isZen()) {
                     zen = true;
                 }
             }
             if (!zen) {
                 for (Pawn p : this.getOpponentPawns()) {
-                    if (p.getType().equals(PawnType.ZEN)) {
+                    if (p.isZen()) {
                         zen = true;
                     }
                 }
@@ -114,33 +117,28 @@ public class Game implements Serializable {
             this.move();
             won = this.aligned(this.currentPlayer);
             this.changeCurrentPlayer();
-            if (this.currentPlayer.equals(this.player1)) {
+            if (this.currentPlayer.equals(this.player1) && !won) {
                 this.asks();
             }
         } while (!won);
 
-        if (this.currentPlayer.equals(this.player1)) {
-            System.out.println("test1");
-            boolean won2 = this.aligned(this.player2);
+        //check who won or if there is an equality
+        if (this.currentPlayer.equals(this.player2)) {
+            boolean won2 = this.aligned(this.player1);
             if (won2) {
-                System.out.println("test2");
-                this.end(this.player1, this.player2);
+                this.end(this.player1);
             }
             else {
-                System.out.println("test3");
-                this.end(this.player1);
+                this.end(this.player1, this.player2);
             }
         }
         else {
-            System.out.println("test4");
-            boolean won2 = this.aligned(this.player1);
+            boolean won2 = this.aligned(this.player2);
             if (won2) {
-                System.out.println("test5");
-                this.end(this.player1, this.player2);
+                this.end(this.player2);
             }
             else {
-                System.out.println("test6");
-                this.end(this.player2);
+                this.end(this.player1, this.player2);
             }
         }
     }
@@ -221,6 +219,7 @@ public class Game implements Serializable {
     
     public void displayGrid() {
 
+        clear();
         System.out.print("\n\n######################################\n\n   ");
         for (int i = 0; i < 11; i++) {
             System.out.print(" " +i+ " ");      
@@ -424,6 +423,7 @@ public class Game implements Serializable {
                 possible = false;
             }
             else {
+                //calculate the number of pawns on the column
                 if (pawn.getX() == coordinates[0] && pawn.getY() < coordinates[1]) {
                     int y = 0;
                     for (Pawn p : this.getCurrentPawns()) {
@@ -440,6 +440,7 @@ public class Game implements Serializable {
                         possible = false;
                     }
                     if (possible) {
+                        //check if the move in one of these cases to cancel it
                         for (int i = pawn.getY()+1; i <= coordinates[1]; i++) {
                             if (!this.grid[i][coordinates[0]].isFree()) {
                                 for (Pawn p : this.getCurrentPawns()) {
@@ -459,6 +460,7 @@ public class Game implements Serializable {
                         } 
                     }
                 }
+                //calculate the number of pawns on the column
                 else if (pawn.getX() == coordinates[0] && pawn.getY() > coordinates[1]) {
                     int y = 0;
                     for (Pawn p : this.getCurrentPawns()) {
@@ -475,6 +477,7 @@ public class Game implements Serializable {
                         possible = false;
                     }
                     if (possible) {
+                        //check if the move in one of these cases to cancel it
                         for (int i = pawn.getY()-1; i >= coordinates[1]; i--) {
                             if (!this.grid[i][coordinates[0]].isFree()) {
                                 for (Pawn p : this.getCurrentPawns()) {
@@ -494,6 +497,7 @@ public class Game implements Serializable {
                         }
                     } 
                 }
+                //calculate the number of pawns on the line
                 else if (pawn.getY() == coordinates[1] && pawn.getX() < coordinates[0]) {
                     int y = 0;
                     for (Pawn p : this.getCurrentPawns()) {
@@ -510,6 +514,7 @@ public class Game implements Serializable {
                         possible = false;
                     }
                     if (possible) {
+                        //check if the move in one of these cases to cancel it
                         for (int i = pawn.getX()+1; i <= coordinates[0]; i++) {
                             if (!this.grid[coordinates[1]][i].isFree()) {
                                 for (Pawn p : this.getCurrentPawns()) {
@@ -529,6 +534,7 @@ public class Game implements Serializable {
                         } 
                     }
                 }
+                //calculate the number of pawns on the line
                 else if (pawn.getY() == coordinates[1] && pawn.getX() > coordinates[0]) {
                     int y = 0;
                     for (Pawn p : this.getCurrentPawns()) {
@@ -545,6 +551,7 @@ public class Game implements Serializable {
                         possible = false;
                     }
                     if (possible) {
+                        //check if the move in one of these cases to cancel it
                         for (int i = pawn.getX()-1; i >= coordinates[0]; i--) {
                             if (!this.grid[coordinates[1]][i].isFree()) {
                                 for (Pawn p : this.getCurrentPawns()) {
@@ -564,6 +571,7 @@ public class Game implements Serializable {
                         } 
                     }
                 }
+                //calculate the number of pawns on the right diagonal
                 else if ((coordinates[1]-pawn.getY() == coordinates[0]-pawn.getX()) && (coordinates[1] > pawn.getY()) && (coordinates[0] > pawn.getX())) {
                     int i = 0;
                     int j = 0;
@@ -606,6 +614,7 @@ public class Game implements Serializable {
                         possible = false;
                     }
                     if (possible) {
+                        //check if the move in one of these cases to cancel it
                         int x = pawn.getX() +1;
                         int y = pawn.getY() +1;
                         while (x <= coordinates[0] || y <= coordinates[1]) {
@@ -629,6 +638,7 @@ public class Game implements Serializable {
                         } 
                     } 
                 }
+                //calculate the number of pawns on the left diagonal
                 else if ((Math.abs(coordinates[1]-pawn.getY()) == coordinates[0]-pawn.getX()) && (coordinates[1] < pawn.getY()) && (coordinates[0] > pawn.getX())) {
                     int i = 0;
                     int j = 0;
@@ -672,6 +682,7 @@ public class Game implements Serializable {
                         possible = false;
                     }
                     if (possible) {
+                        //check if the move in one of these cases to cancel it
                         int x = pawn.getX() +1;
                         int y = pawn.getY() -1;
                         while (x <= coordinates[0] || y >= coordinates[1]) {
@@ -695,6 +706,7 @@ public class Game implements Serializable {
                         }  
                     }
                 }
+                //calculate the number of pawns on the left diagonal
                 else if ((coordinates[1]-pawn.getY() == Math.abs(coordinates[0]-pawn.getX())) && (coordinates[1] > pawn.getY()) && (coordinates[0] < pawn.getX())) {
                     int i = 0;
                     int j = 0;
@@ -737,6 +749,7 @@ public class Game implements Serializable {
                         possible = false;
                     }
                     if (possible) {
+                        //check if the move in one of these cases to cancel it
                         int x = pawn.getX() -1;
                         int y = pawn.getY() +1;
                         while (x >= coordinates[0] || y <= coordinates[1]) {
@@ -760,6 +773,7 @@ public class Game implements Serializable {
                         }
                     }    
                 }
+                //calculate the number of pawns on the right diagonal
                 else if ((coordinates[1]-pawn.getY() == coordinates[0]-pawn.getX()) && (coordinates[1] < pawn.getY()) && (coordinates[0] < pawn.getX())) {
                     int i = 0;
                     int j = 0;
@@ -802,6 +816,7 @@ public class Game implements Serializable {
                         possible = false;
                     }
                     if (possible) {
+                        //check if the move in one of these cases to cancel it
                         int x = pawn.getX() -1;
                         int y = pawn.getY() -1;
                         while (x >= coordinates[0] || y >= coordinates[1]) {
@@ -836,8 +851,6 @@ public class Game implements Serializable {
 
     /**
      * Move the pawn to the given coordinates
-     * @param pawn : pawn the player wants to move
-     * @param coordinate : coordinates of the square 
      */
 
     public void move() {
@@ -852,11 +865,13 @@ public class Game implements Serializable {
         }
         if (pawn != null && coordinates[0] >= 0 && coordinates[0] < size && coordinates[1] >= 0 && coordinates[1] < size) {
             do {
-                this.displayGrid();
+                if (this.currentPlayer.getHuman()) {
+                    this.displayGrid();
+                }
                 pawn = this.readPawn(this.currentPlayer);
                 coordinates = this.readMove(this.currentPlayer);
                 possible = movePossible(pawn, coordinates);
-                if (!possible) {
+                if (!possible && this.currentPlayer.getHuman()) {
                     System.out.println("\n####################################################################\n#You can't move this pawn at these coordinates, please choose again#\n####################################################################\n");
                 }
             } while (!possible);
@@ -874,6 +889,7 @@ public class Game implements Serializable {
             int i = 0;
             boolean good = false;
 
+            //check if one opponent pawn is on the new square of the moved pawn
             while (!good && i < this.getOpponentPawns().size()) {
                 if (this.getOpponentPawns().get(i).getX() == coordinates[0] && this.getOpponentPawns().get(i).getY() == coordinates[1]) {
                     this.getOpponentPawns().remove(i);
@@ -900,7 +916,6 @@ public class Game implements Serializable {
         ZenType type = this.readZen(this.currentPlayer);
         System.out.println("");
 
-        //if (this.currentPlayer.equals(this.player1)) {
             if (this.getCurrentPawns().get(i).isZen()) {
                 zen1 = this.getCurrentPawns().get(i);
                 pawned = true;
@@ -952,6 +967,11 @@ public class Game implements Serializable {
         return rules;
     }
 
+    /**
+     * Prompt displayed every round to aks the players
+     * if they want to continu, see the rules, save or quit
+     */
+
     public void asks() {
 
         String x = "";
@@ -977,6 +997,28 @@ public class Game implements Serializable {
     }
 
     /**
+     * Clears the terminal
+     * Credits to J.Rouillier for helping me doing this method
+     */
+    
+    public static void clear() {
+        if (System.getProperty("os.name").contains("Windows")) {
+            try{
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch(IOException e){
+                e.printStackTrace();
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+  
+        } 
+        else {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+        }
+     }
+
+    /**
      * End the game
      * @param player : player who won the game
      */
@@ -989,6 +1031,12 @@ public class Game implements Serializable {
         System.exit(0);
 
     }
+
+    /**
+     * End the game in case of an equality
+     * @param player1 : player who won
+     * @param player2 : player who also won
+     */
 
     public void end(Player player1, Player player2) {
 

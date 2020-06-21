@@ -21,7 +21,8 @@ public class SaveAndLoadGameTest {
         whitePawns.add(p1);
         blackPawns.add(p2);
         blackPawns.add(p3);
-        g1 = new Game(blackPawns, whitePawns, name1, name2);
+        Mode mode = Mode.HH;
+        g1 = new Game(blackPawns, whitePawns, name1, name2, mode);
     }
 
     @After() 
