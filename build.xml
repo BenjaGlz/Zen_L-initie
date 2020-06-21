@@ -34,7 +34,7 @@
         </jar>
     </target>
 
-    <target name="junit" depends="javadoc"
+    <target name="junit" depends="jar"
         description="Launch all the tests">
         <javac includeantruntime="false" srcdir="src" destdir="class"/>  
         <mkdir dir="reportTest"/>
@@ -51,7 +51,6 @@
             <test name="test.GameTest" />
             <test name="test.PawnTest" />
             <test name="test.SquareTest" />
-            <test name="test.SaveAndLoadGameTest" />
         </junit>
         <junitreport todir="reportTest">
             <fileset dir="." includes="TEST-*.xml"/>

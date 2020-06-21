@@ -1,9 +1,12 @@
 package game;
+
 import save.*;
+
+import java.io.File;
 import java.util.*;
 
 /**
- * Class which set up the game all along it
+ * Class which set up the game 
  * @author B.Guillouzo
  */
 
@@ -32,15 +35,42 @@ public class Zen {
 
             boolean save = this.launch();
             String gameFile = "";
+            boolean good = false;
 
             if (save) {  
                 //Launch an existing game saved
-                do {
-                    System.out.println("\n\n=======================[ Name of the file to load ]=======================");
-                    gameFile = "../data/" + SC.nextLine();
-                }  while (gameFile == null && SC.hasNextLine());
-                this.game = LoadGame.loadGame(gameFile);
-                this.game.start();
+                File folder = new File("../data/saves/");
+                File[] listOfFiles = folder.listFiles();
+
+                //if there are no saved game
+                if (listOfFiles.length == 0) {
+                    System.out.println("\n\n==================[ No saved game, Launching new game ]==================\n");
+                    this.configure();
+                    this.game = new Game(this.blackPawns, this.whitePawns, name1, name2, this.mode);
+                    this.game.start();
+                }
+                else {
+                    //print all the files of the folder
+                    System.out.println("\n\n=======================[ Choose the file to load ]=======================\n");
+                    for (int i = 0; i < listOfFiles.length; i++) {
+                        if (listOfFiles[i].isFile()) {
+                        System.out.println(i+1 + " - " + listOfFiles[i].getName().substring(0, listOfFiles[i].getName().length()-4));
+                        }
+                    }
+                    System.out.println("");
+                    do {
+                        gameFile = "../data/saves/" + SC.next() + ".bin";
+                        int i = 0;
+                        while (i < listOfFiles.length && !good) {
+                            if (gameFile.substring(14, gameFile.length()-4).equals(listOfFiles[i].getName().substring(0, listOfFiles[i].getName().length()-4))) {
+                                good = true;
+                            }
+                            i++;
+                        }
+                    }  while (!good);
+                    this.game = LoadGame.loadGame(gameFile);
+                    this.game.start();
+                }
             }
             else {  
                 //launch a very new game

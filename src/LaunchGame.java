@@ -1,6 +1,5 @@
 import game.*;
 import java.util.Scanner;
-import java.io.IOException;
 
 /**
  * Launches the whole game of Zen

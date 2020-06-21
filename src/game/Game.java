@@ -93,7 +93,7 @@ public class Game implements Serializable {
         this.displayGrid();
         System.out.println(this.rules());
 
-        //boucle de jeu
+        //game loop
         do {
             System.out.println("\n\n====================[ It's your turn to play " +this.currentPlayer.getName()+ " ]====================\n");
             //check if the zen pawn is still in the game
@@ -987,7 +987,7 @@ public class Game implements Serializable {
         }
         else if (x.equalsIgnoreCase("s")) {
             System.out.println("Write the name of the file you want to save the game in");
-            filename = "../data/" + SC.next();
+            filename = "../data/saves/" + SC.next() + ".bin";
             SaveGame.saveGame(this, filename);
             System.exit(0);
         }

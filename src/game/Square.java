@@ -11,7 +11,7 @@ public class Square implements Serializable{
 
     private int x;
     private int y;
-    private boolean free; //expliquer pourquoi ajouté
+    private boolean free; 
     private static final int size = 11;
  
 

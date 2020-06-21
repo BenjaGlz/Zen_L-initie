@@ -1,9 +1,8 @@
 package test;
+
 import org.junit.*;
 import static org.junit.Assert.*;
 import game.*;
-import jdk.jfr.Timestamp;
-
 import java.util.ArrayList;
 
 public class GameTest {
@@ -74,19 +73,6 @@ public class GameTest {
         assertSame(p, p1);
     }
 
-    @Test()
-    public void changeCurrentTest() {
-        g.changeCurrentPlayer();
-        assertSame(play2, g.getCurrentPlayer());
-    }
-
-    @Test 
-    public void getCurrentTest() {
-        System.out.println(play1.getName());
-        System.out.println(g.getCurrentPlayer().getName());
-        assertSame(play1, g.getCurrentPlayer());
-    }
-
     @Test 
     public void getCurrentPawntest() {
         assertSame(blackPawns, g.getCurrentPawns());
@@ -95,20 +81,5 @@ public class GameTest {
     @Test 
     public void getOpponentPawntest() {
         assertSame(whitePawns, g.getOpponentPawns());
-    }
-
-    @Test()
-    public void movePossibleTest() {
-        int[] tab1 = {7, 7};
-        Pawn pawn = new Pawn(8,10, PawnType.WHITE);
-        Pawn pawn1 = new Pawn(8, 9, PawnType.WHITE);
-        Pawn pawn2 = new Pawn(7, 10, PawnType.BLACK);
-        //assertFalse(g.movePossible(pawn, tab1));
-        int[] tab2 = {7, 9};
-        assertTrue(g.movePossible(pawn, tab2));
-        int[] tab3 = {8, 8};
-        assertTrue(g.movePossible(pawn, tab3));
-        int[] tab4 = {6, 10};
-        assertFalse(g.movePossible(pawn, tab4));
     }
 }
